@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Last Campaign — Mobile Bay, Spanish Fort,</title>
+  <title>Fort Blakeley</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Oswald:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#0d0a06;
+  --smoke:#1e1812;
+  --sepia:#4a2e12;
+  --aged:#7a5230;
+  --parchment:#f2ead8;
+  --cream:#f8f4ea;
+  --cannon:#b5922a;
+  --rust:#8c2e18;
+  --union:#1a3a5c;
+  --confederate:#2e4a1a;
+  --blood:#6b1212;
+  --sand:#d4bc96;
+  --rule:#c4a46a;
+  --gunmetal:#2a2a2a;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--ink);font-family:"EB Garamond",Georgia,serif;font-size:18px;line-height:1.78;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(13,10,6,0.96);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--cannon);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:52px;
+}
+.nav-title{font-family:"Oswald",sans-serif;font-weight:300;font-size:.8rem;letter-spacing:.25em;text-transform:uppercase;color:var(--cannon);}
+nav ul{list-style:none;display:flex;gap:1.4rem;}
+nav a{font-family:"Oswald",sans-serif;font-weight:300;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);text-decoration:none;transition:color .2s;}
+nav a:hover{color:var(--cannon);}
+
+/* COVER */
+.cover{
+  min-height:100vh;background:var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:5rem 2rem 4rem;position:relative;overflow:hidden;
+}
+.cover::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 60%, rgba(181,146,42,.07) 0%, transparent 70%);
+  pointer-events:none;
+}
+.cover-stars{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%, rgba(242,234,216,.3), transparent),
+    radial-gradient(1px 1px at 80% 15%, rgba(242,234,216,.2), transparent),
+    radial-gradient(1px 1px at 35% 75%, rgba(242,234,216,.15), transparent),
+    radial-gradient(1px 1px at 65% 50%, rgba(242,234,216,.1), transparent);
+  pointer-events:none;
+}
+.cover-badge{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.78rem;
+  letter-spacing:.4em;text-transform:uppercase;color:var(--cannon);
+  margin-bottom:1.5rem;
+}
+.cover-rule{width:100px;height:1px;background:var(--cannon);margin:.8rem auto;}
+.cover-title{
+  font-family:"Playfair Display",serif;font-size:clamp(2.8rem,7.5vw,7rem);
+  font-weight:900;color:var(--parchment);line-height:1.05;margin:.3rem 0;
+}
+.cover-or{
+  font-family:"Playfair Display",serif;font-style:italic;font-size:clamp(1rem,2vw,1.4rem);
+  color:var(--aged);margin:.5rem 0;
+}
+.cover-sub{
+  font-family:"Playfair Display",serif;font-style:italic;
+  font-size:clamp(1.1rem,2.5vw,1.8rem);color:var(--sand);margin-bottom:1.8rem;
+}
+.cover-dates{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.8rem;
+  letter-spacing:.3em;color:rgba(212,188,150,.6);text-transform:uppercase;
+}
+
+.cover-name{
+  font-family:"Oswald",sans-serif;font-weight:500;font-size:1.3rem;
+  letter-spacing:.3em;color:rgba(212,188,150,.6);text-transform:uppercase;
+}
+.cover-tagline{
+  margin-top:2.5rem;font-family:"EB Garamond",serif;font-style:italic;
+  font-size:1rem;color:rgba(212,188,150,.45);max-width:520px;line-height:1.6;
+}
+.scroll-hint{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  color:var(--aged);font-size:1.3rem;animation:bounce 2.2s infinite;
+}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(9px);}}
+
+/* CHAPTER OPENER */
+.chapter-opener{
+  background:var(--smoke);padding:7rem 2rem 5rem;text-align:center;
+  border-bottom:3px solid var(--cannon);position:relative;
+}
+.chapter-label{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.72rem;
+  letter-spacing:.4em;text-transform:uppercase;color:var(--cannon);margin-bottom:1rem;
+}
+.chapter-opener h2{
+  font-family:"Playfair Display",serif;font-size:clamp(2.4rem,6vw,5.5rem);
+  font-weight:900;color:var(--parchment);line-height:1.08;
+}
+.chapter-sub{
+  font-family:"Playfair Display",serif;font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.5rem);color:var(--aged);margin-top:.7rem;
+}
+.chapter-dates{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.78rem;
+  letter-spacing:.2em;color:var(--cannon);margin-top:1.2rem;
+  border:1px solid rgba(181,146,42,.35);display:inline-block;padding:.4rem 1.2rem;
+}
+
+/* CONTENT BODY */
+.content-body{max-width:820px;margin:0 auto;padding:4rem 2rem;}
+.content-body p{margin-bottom:1.4rem;color:var(--ink);font-size:1rem;text-align:justify;hyphens:auto;}
+.content-body h3{
+  font-family:"Playfair Display",serif;font-size:1.55rem;font-weight:700;
+  color:var(--sepia);margin:2.5rem 0 1rem;border-bottom:1px solid var(--rule);padding-bottom:.4rem;
+}
+.content-body blockquote{
+  border-left:3px solid var(--cannon);padding:1rem 1.5rem;margin:2rem 0;
+  background:rgba(181,146,42,.06);font-style:italic;color:var(--sepia);font-size:1.05rem;
+}
+.source-tag{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.7rem;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--aged);
+  margin-top:.3rem;display:block;
+}
+.dropcap::first-letter{
+  font-family:"Playfair Display",serif;font-size:4.5rem;font-weight:900;
+  float:left;line-height:.8;margin:.05em .09em 0 0;color:var(--rust);
+}
+
+/* BATTLE PAGES */
+.battle-page{background:var(--parchment);}
+.battle-page-dark{background:var(--gunmetal);}
+
+/* SVG MAPS */
+.map-container{
+  background:var(--union);padding:2.5rem 2rem;text-align:center;
+}
+.map-container h3{
+  font-family:"Playfair Display",serif;font-size:1.5rem;color:var(--parchment);margin-bottom:.5rem;
+}
+.map-container p{color:var(--sand);font-style:italic;font-size:.9rem;margin-bottom:1.5rem;}
+.battle-map{max-width:860px;width:100%;display:block;margin:0 auto;}
+
+/* PULL QUOTE */
+.pull-quote{
+  background:var(--sepia);color:var(--parchment);padding:4rem 3rem;text-align:center;
+}
+.pull-quote::before{content:"❧";display:block;font-size:2rem;color:var(--cannon);margin-bottom:1.5rem;}
+.pull-quote blockquote{
+  font-family:"Playfair Display",serif;font-style:italic;
+  font-size:clamp(1.3rem,3vw,2.2rem);line-height:1.5;
+  max-width:720px;margin:0 auto 1rem;color:var(--parchment);border:none;background:none;padding:0;
+}
+.pull-quote cite{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.78rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--cannon);
+}
+
+/* STATS BAR */
+.stats-bar{
+  background:var(--smoke);padding:2.5rem 2rem;
+  display:flex;flex-wrap:wrap;gap:2px;justify-content:center;
+}
+.stat{
+  background:rgba(255,255,255,.03);padding:1.5rem 2rem;text-align:center;
+  min-width:180px;flex:1;border:1px solid rgba(181,146,42,.15);
+}
+.stat-num{
+  font-family:"Oswald",sans-serif;font-weight:600;font-size:2.2rem;
+  color:var(--cannon);line-height:1;margin-bottom:.3rem;
+}
+.stat-label{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.72rem;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--sand);
+}
+
+/* COMMANDERS */
+.commanders{
+  background:var(--cream);padding:3rem 2rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+}
+.commander-side{padding:2.5rem 2rem;}
+.commander-side.union{background:rgba(26,58,92,.07);}
+.commander-side.confederate{background:rgba(46,74,26,.07);}
+.commander-side h4{
+  font-family:"Oswald",sans-serif;font-weight:500;font-size:.78rem;
+  letter-spacing:.3em;text-transform:uppercase;margin-bottom:1.2rem;
+}
+.commander-side.union h4{color:var(--union);}
+.commander-side.confederate h4{color:var(--confederate);}
+.commander-name{
+  font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;
+  color:var(--sepia);margin-bottom:.4rem;
+}
+.commander-rank{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.8rem;
+  letter-spacing:.12em;color:var(--aged);margin-bottom:.8rem;
+}
+.commander-side p{font-size:.9rem;color:var(--ink);line-height:1.65;}
+
+/* TIMELINE */
+.timeline{background:var(--cream);padding:4rem 2rem;border-top:1px solid var(--rule);}
+.timeline h3{
+  font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--sepia);
+  text-align:center;margin-bottom:3rem;
+}
+.tl-item{
+  display:grid;grid-template-columns:130px 1fr;gap:2rem;
+  max-width:800px;margin:0 auto 2rem;padding-bottom:2rem;
+  border-bottom:1px solid rgba(196,164,106,.4);
+}
+.tl-item:last-child{border-bottom:none;}
+.tl-date{
+  font-family:"Oswald",sans-serif;font-weight:500;font-size:1rem;
+  color:var(--rust);text-align:right;border-right:2px solid var(--cannon);
+  padding-right:1.5rem;padding-top:.15rem;line-height:1.3;
+}
+.tl-content{font-size:.95rem;color:var(--ink);}
+.tl-content strong{
+  font-family:"Playfair Display",serif;font-size:1.05rem;color:var(--sepia);
+  display:block;margin-bottom:.25rem;
+}
+
+/* TWO-COL */
+.two-col{
+  display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;
+  max-width:1120px;margin:0 auto;padding:4rem 2rem;
+}
+.two-col .col p{font-size:.95rem;color:var(--ink);margin-bottom:1.2rem;text-align:justify;}
+.two-col .col h3{
+  font-family:"Playfair Display",serif;font-size:1.35rem;color:var(--sepia);
+  margin-bottom:.9rem;border-bottom:1px solid var(--rule);padding-bottom:.3rem;
+}
+.two-col .col p:first-child::first-letter{
+  font-family:"Playfair Display",serif;font-size:4rem;font-weight:900;
+  float:left;line-height:.8;margin:.05em .09em 0 0;color:var(--rust);
+}
+
+/* SECTION DIVIDER */
+.divider{
+  display:flex;align-items:center;gap:1rem;
+  max-width:500px;margin:3rem auto;padding:0 2rem;
+}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--rule);}
+.divider span{color:var(--cannon);font-size:1.2rem;}
+
+/* SIGNIFICANCE PANEL */
+.significance{
+  background:var(--union);color:var(--parchment);padding:4rem 2rem;
+  text-align:center;
+}
+.significance h3{
+  font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--cannon);margin-bottom:2rem;
+}
+.sig-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1.5rem;max-width:1000px;margin:0 auto;
+}
+.sig-item{
+  border:1px solid rgba(181,146,42,.3);padding:1.5rem;text-align:left;
+}
+.sig-item h4{
+  font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--cannon);
+  margin-bottom:.6rem;
+}
+.sig-item p{font-size:.88rem;color:var(--sand);line-height:1.65;}
+
+/* MEDALS */
+.medals-section{
+  background:var(--confederate);padding:3rem 2rem;text-align:center;
+}
+.medals-section h3{
+  font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--parchment);margin-bottom:.5rem;
+}
+.medals-section p.intro{color:rgba(242,234,216,.7);font-style:italic;margin-bottom:2rem;font-size:.9rem;}
+.medal-list{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:.75rem;max-width:900px;margin:0 auto;
+}
+.medal-item{
+  border:1px solid rgba(242,234,216,.15);padding:.75rem 1rem;text-align:left;
+  font-size:.85rem;color:rgba(242,234,216,.8);
+}
+.medal-item strong{display:block;color:var(--cannon);font-size:.9rem;margin-bottom:.2rem;}
+
+/* COLOPHON */
+.colophon{
+  background:var(--ink);color:rgba(212,188,150,.4);text-align:center;
+  padding:4rem 2rem;font-family:"Oswald",sans-serif;font-weight:300;
+  font-size:.73rem;letter-spacing:.15em;text-transform:uppercase;line-height:2.2;
+}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .two-col,.commanders{grid-template-columns:1fr;}
+  nav ul{display:none;}
+  .tl-item{grid-template-columns:90px 1fr;gap:1rem;}
+  .stats-bar{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-title">The Last Campaign</span>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#mobile-bay">Mobile Bay</a></li>
+    <li><a href="#spanish-fort">Spanish Fort</a></li>
+    <li><a href="#blakeley">Fort Blakeley</a></li>
+    <li><a href="#legacy">Legacy</a></li>
+  </ul>
+</nav>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-stars"></div>
+  <div class="cover-rule"></div>
+  <h1 class="cover-title">The Last<br>Campaign</h1>
+  <p class="cover-or">—</p>
+  <p class="cover-sub">Mobile Bay · Spanish Fort</p>
+  <p class="cover-sub">Fort Blakeley</p>
+  <div class="cover-rule"></div>
+  <p class="cover-dates">August 5, 1864 — April 12, 1865 &nbsp;&nbsp</p>
+<p class="cover-name">Andy Talbert</p>
+  <p class="cover-tagline">The battles that closed the last great Confederate port, ended the last major campaign of the Civil War, and drew the curtain on four years of fire — six hours after Appomattox.</p>
+  <div class="scroll-hint">↓</div>
+</section>
+
+
+<!-- ════════════════════════════════
+     PROLOGUE — THE CITY OF MOBILE
+════════════════════════════════ -->
+<section style="background:var(--smoke);" id="prologue">
+  <div style="max-width:820px;margin:0 auto;padding:5rem 2rem;">
+    <p style="font-family:Oswald,sans-serif;font-weight:300;font-size:.72rem;letter-spacing:.35em;text-transform:uppercase;color:var(--cannon);margin-bottom:1rem;">Prologue</p>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.5rem);font-weight:900;color:var(--parchment);margin-bottom:2rem;line-height:1.1;">The Last Open Port</h2>
+    <p style="color:var(--sand);font-size:1.05rem;text-align:justify;margin-bottom:1.4rem;">By the summer of 1864, the Confederacy was bleeding from a thousand wounds. Vicksburg had fallen. Atlanta was besieged. The Army of Northern Virginia was pinned in the trenches of Petersburg. But on the Gulf Coast of Alabama, one great prize still flew Confederate colors: Mobile, the South's most important remaining port on the Gulf of Mexico.</p>
+    <p style="color:var(--sand);font-size:1.05rem;text-align:justify;margin-bottom:1.4rem;">From Havana, Cuba, blockade runners carried vital supplies — salt, medicine, arms — into Mobile Bay. Two railroads connected the city to the Confederacy's interior, feeding the war machine that was running out of everything. Ulysses S. Grant, commanding all Union armies, had made its capture a priority. The man he entrusted with the naval assault was Rear Admiral David Glasgow Farragut, a 63-year-old sailor who had entered the Navy at age nine and spent fifty-four years afloat.</p>
+    <p style="color:var(--sand);font-size:1.05rem;text-align:justify;margin-bottom:1.4rem;">The Confederacy had transformed the approaches to Mobile Bay into a nearly impregnable gauntlet. Fort Morgan on Mobile Point bristled with 46 heavy guns. Fort Gaines stood on Dauphin Island. Between them, the Confederate Torpedo Bureau had planted 67 naval mines — "torpedoes," as they were called — in a triple line across the channel, leaving only a narrow passage of open water directly under Fort Morgan's guns. And waiting inside the bay was the CSS Tennessee, said to be the most powerful ironclad afloat, commanded by the Confederacy's only full admiral: the redoubtable Franklin Buchanan.</p>
+    <p style="color:var(--sand);font-size:1.05rem;text-align:justify;">What followed — the Battle of Mobile Bay in August 1864, the siege of Spanish Fort and the fall of Fort Blakeley in spring 1865 — was a campaign that would close one of history's great naval harbors, settle the fate of a city that had defied the Union for three years, and end, on a bluff overlooking the Mobile-Tensaw Delta, with the very last major battle of the American Civil War.</p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════
+     CHAPTER 1 — BATTLE OF MOBILE BAY
+════════════════════════════════ -->
+<section id="mobile-bay" class="battle-page">
+  <div class="chapter-opener">
+    <p class="chapter-label">Part One</p>
+    <h2>Battle of Mobile Bay</h2>
+    <p class="chapter-sub">"Damn the Torpedoes. Full Speed Ahead."</p>
+    <p class="chapter-dates">August 5 – 23, 1864</p>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">18</div><div class="stat-label">Union Warships</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Confederate Ships</div></div>
+    <div class="stat"><div class="stat-num">67</div><div class="stat-label">Confederate Torpedoes</div></div>
+    <div class="stat"><div class="stat-num">114</div><div class="stat-label">Lost on USS Tecumseh</div></div>
+    <div class="stat"><div class="stat-num">3 hrs</div><div class="stat-label">Duration of Naval Battle</div></div>
+    <div class="stat"><div class="stat-num">~1,500</div><div class="stat-label">Confederates Captured</div></div>
+  </div>
+
+  <!-- COMMANDERS -->
+  <div class="commanders">
+    <div class="commander-side union">
+      <h4>Union</h4>
+      <div class="commander-name">Rear Admiral David G. Farragut</div>
+      <div class="commander-rank">Commander, West Gulf Blockading Squadron</div>
+      <p>Born in Tennessee but fiercely loyal to the Union, Farragut had entered the Navy at age nine. He had captured New Orleans in 1862 and spent the intervening years pressing for the attack on Mobile Bay. Now 63, he would lead from the rigging of his flagship USS Hartford — lashed to the mast so he could see above the smoke — through the most daring naval action of the war.</p>
+    </div>
+    <div class="commander-side confederate">
+      <h4>Confederate</h4>
+      <div class="commander-name">Admiral Franklin Buchanan</div>
+      <div class="commander-rank">Commander, Confederate Naval Forces, Mobile</div>
+      <p>The Confederacy's only full admiral, Buchanan had commanded the CSS Virginia at Hampton Roads in 1862, the first day of the famous ironclad duel, and been wounded there. Now flying his flag from the CSS Tennessee — the most powerful ironclad the South ever built — he waited inside Mobile Bay to defend it at any cost. He would be wounded again, and captured, before the day was out.</p>
+    </div>
+  </div>
+
+  <!-- MAP 1: Mobile Bay -->
+  <div class="map-container">
+    <h3>Mobile Bay — August 5, 1864</h3>
+    <p>The naval battle at the mouth of the bay and the subsequent reduction of the forts</p>
+    <svg class="battle-map" viewBox="0 0 900 640" xmlns="http://www.w3.org/2000/svg" style="font-family:'EB Garamond',serif;">
+      <defs>
+        <pattern id="water" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M0 10 Q5 7 10 10 Q15 13 20 10" stroke="rgba(29,61,82,.35)" stroke-width=".8" fill="none"/>
+        </pattern>
+        <marker id="arrow-u" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <polygon points="0,0 8,4 0,8" fill="#2a5f8c"/>
+        </marker>
+        <marker id="arrow-c" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <polygon points="0,0 8,4 0,8" fill="#8c2e18"/>
+        </marker>
+      </defs>
+
+      <!-- Water background -->
+      <rect width="900" height="640" fill="#0d1e2a"/>
+      <rect width="900" height="640" fill="url(#water)" opacity=".6"/>
+
+      <!-- Mobile Bay label -->
+      <text x="200" y="280" fill="rgba(212,188,150,.35)" font-size="28" font-style="italic" font-family="Playfair Display,serif">Mobile Bay</text>
+
+      <!-- Gulf of Mexico -->
+      <text x="400" y="610" fill="rgba(212,188,150,.3)" font-size="20" font-style="italic" font-family="Playfair Display,serif" text-anchor="middle">Gulf of Mexico</text>
+
+      <!-- Land masses -->
+      <!-- Eastern shore (Mobile Point) -->
+      <path d="M680 640 L720 560 L740 500 L750 450 L745 400 L755 350 L760 280 L770 200 L780 120 L800 0 L900 0 L900 640 Z" fill="#3a2e1a" stroke="#5a4a2a" stroke-width="1"/>
+      <!-- Dauphin Island (west) -->
+      <path d="M0 580 L80 560 L180 550 L260 555 L280 580 L260 620 L0 640 Z" fill="#3a2e1a" stroke="#5a4a2a" stroke-width="1"/>
+      <!-- Eastern mainland shore (top) -->
+      <path d="M0 0 L0 400 L80 380 L120 340 L160 300 L200 270 L260 240 L320 200 L380 160 L440 130 L500 100 L600 60 L680 20 L700 0 Z" fill="#3a2e1a" stroke="#5a4a2a" stroke-width="1"/>
+
+      <!-- Fort Morgan on Mobile Point -->
+      <rect x="718" y="440" width="36" height="36" fill="#6b1212" stroke="#b5922a" stroke-width="2"/>
+      <text x="736" y="455" fill="#f2ead8" font-size="10" font-weight="bold" text-anchor="middle">FORT</text>
+      <text x="736" y="467" fill="#f2ead8" font-size="10" font-weight="bold" text-anchor="middle">MORGAN</text>
+      <!-- Fort Morgan guns range arc -->
+      <path d="M718 458 Q580 370 450 380" stroke="rgba(181,146,42,.3)" stroke-width="1.5" fill="none" stroke-dasharray="5,4"/>
+
+      <!-- Fort Gaines on Dauphin Island -->
+      <rect x="215" y="538" width="32" height="32" fill="#6b1212" stroke="#b5922a" stroke-width="2"/>
+      <text x="231" y="551" fill="#f2ead8" font-size="9" font-weight="bold" text-anchor="middle">FORT</text>
+      <text x="231" y="562" fill="#f2ead8" font-size="9" font-weight="bold" text-anchor="middle">GAINES</text>
+
+      <!-- Minefield (torpedoes) between forts -->
+      <!-- Triple row of mines -->
+      <g opacity=".8">
+        <!-- Row 1 (outermost) -->
+        <circle cx="360" cy="520" r="4" fill="rgba(181,146,42,.9)"/>
+        <circle cx="390" cy="512" r="4" fill="rgba(181,146,42,.9)"/>
+        <circle cx="420" cy="506" r="4" fill="rgba(181,146,42,.9)"/>
+        <circle cx="450" cy="502" r="4" fill="rgba(181,146,42,.9)"/>
+        <circle cx="480" cy="500" r="4" fill="rgba(181,146,42,.9)"/>
+        <circle cx="510" cy="500" r="4" fill="rgba(181,146,42,.9)"/>
+        <circle cx="540" cy="503" r="4" fill="rgba(181,146,42,.9)"/>
+        <circle cx="570" cy="508" r="4" fill="rgba(181,146,42,.9)"/>
+        <circle cx="600" cy="516" r="4" fill="rgba(181,146,42,.9)"/>
+        <circle cx="630" cy="527" r="4" fill="rgba(181,146,42,.9)"/>
+        <circle cx="655" cy="540" r="4" fill="rgba(181,146,42,.9)"/>
+        <!-- Row 2 -->
+        <circle cx="370" cy="490" r="4" fill="rgba(181,146,42,.7)"/>
+        <circle cx="400" cy="480" r="4" fill="rgba(181,146,42,.7)"/>
+        <circle cx="430" cy="474" r="4" fill="rgba(181,146,42,.7)"/>
+        <circle cx="460" cy="470" r="4" fill="rgba(181,146,42,.7)"/>
+        <circle cx="490" cy="468" r="4" fill="rgba(181,146,42,.7)"/>
+        <circle cx="520" cy="469" r="4" fill="rgba(181,146,42,.7)"/>
+        <circle cx="550" cy="473" r="4" fill="rgba(181,146,42,.7)"/>
+        <circle cx="580" cy="480" r="4" fill="rgba(181,146,42,.7)"/>
+        <circle cx="610" cy="490" r="4" fill="rgba(181,146,42,.7)"/>
+        <circle cx="638" cy="502" r="4" fill="rgba(181,146,42,.7)"/>
+        <!-- Row 3 (innermost) -->
+        <circle cx="380" cy="460" r="4" fill="rgba(181,146,42,.5)"/>
+        <circle cx="410" cy="450" r="4" fill="rgba(181,146,42,.5)"/>
+        <circle cx="440" cy="444" r="4" fill="rgba(181,146,42,.5)"/>
+        <circle cx="470" cy="440" r="4" fill="rgba(181,146,42,.5)"/>
+        <circle cx="500" cy="438" r="4" fill="rgba(181,146,42,.5)"/>
+        <circle cx="530" cy="440" r="4" fill="rgba(181,146,42,.5)"/>
+        <circle cx="560" cy="445" r="4" fill="rgba(181,146,42,.5)"/>
+        <circle cx="590" cy="454" r="4" fill="rgba(181,146,42,.5)"/>
+        <circle cx="618" cy="467" r="4" fill="rgba(181,146,42,.5)"/>
+      </g>
+      <!-- Minefield label -->
+      <text x="490" y="540" fill="rgba(181,146,42,.8)" font-size="11" text-anchor="middle" font-style="italic">Confederate Torpedo Field</text>
+
+      <!-- Open channel (narrow) near Fort Morgan -->
+      <path d="M668 420 L718 440" stroke="rgba(255,255,255,.2)" stroke-width="12" stroke-linecap="round"/>
+      <text x="685" y="418" fill="rgba(255,255,255,.5)" font-size="8" text-anchor="middle" font-style="italic">Open Channel</text>
+
+      <!-- UNION FLEET approaching from Gulf -->
+      <!-- 4 Monitors (right column) -->
+      <rect x="760" y="590" width="22" height="10" fill="#2a5f8c" rx="2"/>
+      <rect x="760" y="574" width="22" height="10" fill="#2a5f8c" rx="2"/>
+      <rect x="760" y="558" width="22" height="10" fill="#2a5f8c" rx="2"/>
+      <!-- Tecumseh (sunk) -->
+      <rect x="762" y="542" width="18" height="8" fill="#2a5f8c" rx="2" opacity=".4"/>
+      <text x="771" y="538" fill="rgba(255,100,100,.9)" font-size="8" text-anchor="middle">✕ Tecumseh</text>
+      <text x="760" y="602" fill="#a0c4e0" font-size="9" text-anchor="start">Ironclads</text>
+
+      <!-- Wooden fleet (left column) -->
+      <rect x="695" y="590" width="28" height="10" fill="#2a5f8c" rx="2" opacity=".8"/>
+      <rect x="695" y="574" width="28" height="10" fill="#2a5f8c" rx="2" opacity=".8"/>
+      <rect x="695" y="558" width="28" height="10" fill="#2a5f8c" rx="2" opacity=".8"/>
+      <rect x="695" y="542" width="28" height="10" fill="#2a5f8c" rx="2" opacity=".8"/>
+      <rect x="695" y="526" width="28" height="10" fill="#2a5f8c" rx="2" opacity=".8"/>
+      <rect x="695" y="510" width="28" height="10" fill="#2a5f8c" rx="2" opacity=".8"/>
+      <text x="709" y="606" fill="#a0c4e0" font-size="9" text-anchor="middle">Hartford</text>
+      <text x="709" y="616" fill="#a0c4e0" font-size="9" text-anchor="middle">&amp; Fleet</text>
+      <!-- Arrows showing fleet movement -->
+      <path d="M709 500 L709 430" stroke="#2a5f8c" stroke-width="2" fill="none" marker-end="url(#arrow-u)"/>
+
+      <!-- CSS Tennessee inside bay -->
+      <rect x="530" y="380" width="36" height="14" fill="#6b1212" rx="3"/>
+      <text x="548" y="375" fill="rgba(181,146,42,.9)" font-size="9" text-anchor="middle" font-style="italic">CSS Tennessee</text>
+      <!-- Confederate gunboats -->
+      <rect x="480" y="370" width="26" height="9" fill="#5a1212" rx="2" opacity=".8"/>
+      <rect x="455" y="355" width="22" height="8" fill="#5a1212" rx="2" opacity=".6"/>
+      <text x="468" y="378" fill="rgba(181,146,42,.7)" font-size="8" text-anchor="middle" font-style="italic">CS gunboats</text>
+
+      <!-- Fire exchange arcs -->
+      <path d="M736 458 Q650 430 548 394" stroke="rgba(181,146,42,.5)" stroke-width="1.5" fill="none" stroke-dasharray="3,3"/>
+      <path d="M709 510 Q680 480 736 458" stroke="rgba(42,95,140,.5)" stroke-width="1.5" fill="none" stroke-dasharray="3,3"/>
+
+      <!-- Selma / Gaines / Morgan labels -->
+      <text x="350" y="415" fill="rgba(212,188,150,.5)" font-size="9" text-anchor="middle" font-style="italic">CSS Selma</text>
+      <text x="350" y="430" fill="rgba(212,188,150,.3)" font-size="8" text-anchor="middle" font-style="italic">(captured)</text>
+
+      <!-- Mobile city hint -->
+      <text x="60" y="200" fill="rgba(212,188,150,.4)" font-size="14" font-style="italic" font-family="Playfair Display,serif">Mobile</text>
+      <text x="60" y="218" fill="rgba(212,188,150,.3)" font-size="10" font-style="italic">8 miles</text>
+      <path d="M60 225 L60 280" stroke="rgba(212,188,150,.2)" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- Legend -->
+      <rect x="15" y="460" width="175" height="120" fill="rgba(0,0,0,.55)" rx="4"/>
+      <text x="25" y="478" fill="var(--cannon)" font-size="10" font-weight="bold" font-family="Oswald,sans-serif">LEGEND</text>
+      <rect x="25" y="485" width="14" height="8" fill="#2a5f8c" rx="1"/>
+      <text x="44" y="493" fill="#a0c4e0" font-size="9">Union Fleet</text>
+      <rect x="25" y="500" width="14" height="8" fill="#6b1212" rx="1"/>
+      <text x="44" y="508" fill="rgba(181,146,42,.9)" font-size="9">Confederate Ships/Forts</text>
+      <circle cx="32" cy="521" r="5" fill="rgba(181,146,42,.9)"/>
+      <text x="44" y="524" fill="rgba(212,188,150,.7)" font-size="9">Torpedo (mine)</text>
+      <text x="25" y="540" fill="rgba(255,100,100,.8)" font-size="9">✕ USS Tecumseh — sunk</text>
+      <path d="M25 553 L55 553" stroke="#2a5f8c" stroke-width="1.5" stroke-dasharray="3,3"/>
+      <text x="60" y="556" fill="rgba(212,188,150,.6)" font-size="9">Gunfire exchange</text>
+
+      <!-- Title -->
+      <text x="450" y="26" fill="var(--cannon)" font-size="15" font-weight="bold" text-anchor="middle" font-family="Oswald,sans-serif">BATTLE OF MOBILE BAY — AUGUST 5, 1864</text>
+      <text x="450" y="42" fill="rgba(212,188,150,.55)" font-size="10" text-anchor="middle" font-style="italic">Farragut's fleet passes through the Confederate minefield and torpedo lines</text>
+    </svg>
+  </div>
+
+  <div class="content-body">
+    <p class="dropcap">August 5, 1864 dawned with a gentle haze that turned the sky a milky white and a sea as smooth as glass. Just before 5:30 in the morning, Rear Admiral Farragut's fleet of eighteen warships got under way, standing into the mouth of Mobile Bay in two parallel columns. The four ironclad monitors steamed on the right, nearest Fort Morgan and its 46 guns. The fourteen wooden warships, lashed in pairs so one could tow the other if disabled, followed on the left — each bigger ship shielding its smaller partner.</p>
+
+    <p>Farragut himself had planned to lead the assault from his flagship USS Hartford but at the last minute, his captains prevailed upon him to let the sloop Brooklyn go first. If the admiral were hurt early, they argued, the whole attack might collapse. Reluctantly, he agreed. He climbed into the rigging of Hartford to see above the smoke and haze, and was lashed there for his safety.</p>
+
+    <p>At 6:45 a.m., the lead ironclad, Tecumseh, steamed within extreme range of Fort Morgan's guns. The fort's defenders began to reply. By 7:15, the action was general — the roar of the guns, the shriek of shot, the white smoke beginning to obscure everything in a choking fog of battle.</p>
+
+    <h3>The Sinking of the Tecumseh</h3>
+    <p>Captain Tunis Craven in the Tecumseh spotted the CSS Tennessee through the narrow viewing slit of his pilothouse. Intent on engaging Buchanan's ironclad, he steered Tecumseh slightly to the right — directly into the minefield. At approximately 7:40 a.m., the monitor struck a torpedo. The explosion was enormous. Tecumseh rolled over and sank in less than a minute, carrying 94 of her 114 men — including Captain Craven — to the bottom of Mobile Bay. In a last selfless act, Craven stood aside to let his pilot through the hatch first. There was not time for both.</p>
+
+    <blockquote>
+      "As the monitor sank, only 21 men reached the surface. Farragut, watching from Hartford's rigging, immediately dispatched a small boat to rescue survivors even as Fort Morgan's guns trained on it."
+      <span class="source-tag">— American Battlefield Trust</span>
+    </blockquote>
+
+    <p>The sudden destruction of Tecumseh caused confusion in the Union line. Captain Alden of Brooklyn, seeing the mine explode, panicked and reversed engines to avoid the wreck and any other torpedoes. Behind Brooklyn, the remaining ships slowed and bunched up — directly under the guns of Fort Morgan. Confederate gunners lashed at the massed Federal squadron and were finding the range. Disaster loomed minutes away.</p>
+
+    <h3>"Damn the Torpedoes"</h3>
+    <p>Farragut watched all of this from Hartford's rigging. He could not stop under the guns of Fort Morgan. He could not back down with a column of ships behind him. He ordered Hartford to pull out of line and steam past the stalled Brooklyn to port — directly through the minefield.</p>
+
+    <blockquote>
+      "Damn the torpedoes! Four bells, Captain Drayton!" — and to the commander of the Metacomet, lashed to Hartford's side — "Jouett, full speed!"
+      <span class="source-tag">— Most reliable reconstruction of Farragut's famous order, August 5, 1864</span>
+    </blockquote>
+
+    <p>Hartford and Metacomet put on maximum power, their propellers lashing the water together. As they passed through the minefield, some Union sailors later claimed they had heard the primers snapping on the torpedoes — clicking against Hartford's hull as she steamed through without exploding them. Several had been submerged too long in the warm water to function. The gamble paid off. The entire column of warships followed in Hartford's wake, and every ship made it through.</p>
+
+    <p>Once inside the expansive bay, the fleet could quickly move out of range of Fort Morgan's guns, leaving only the Confederate ships to contend with. Farragut's gunboats promptly captured the CSS Selma and drove CSS Gaines onto the beach, where her crew burned her. CSS Morgan fled to the protection of the fort's guns. Only the Tennessee remained.</p>
+
+    <h3>The Lone Charge of the CSS Tennessee</h3>
+    <p>Farragut expected Admiral Buchanan to shelter Tennessee under Fort Morgan's guns while the Union fleet anchored in the upper bay and assessed its damage. What happened next astonished every officer on both sides. Instead of retreating to safety, Buchanan made his decision: he would take on the entire Federal fleet, single-handed.</p>
+
+    <p>The CSS Tennessee steamed directly for the Union fleet. She was slow — barely six knots — but her armor was six inches of iron over twenty-four inches of timber, and her two seven-inch and four 6.4-inch Brooke rifles had already demonstrated their lethal effectiveness. Buchanan hoped to ram his adversaries as he had at Hampton Roads; this time, his target ships were in motion and his own vessel was the slower. Tennessee became the target of ramming rather than the rammer.</p>
+
+    <p>For the next hour, the entire Union fleet — monitors, sloops, gunboats — concentrated on the lone Confederate ironclad. The Monongahela rammed her. The Lackawanna rammed her twice. Shot after shot bounced off Tennessee's iron sides — until Union gunners found the ship's fatal weakness: her exposed rudder chains, running in unprotected trenches across the after deck. Shot carried them away, leaving the ironclad unable to steer. She could only circle helplessly as the Union fleet pounded her into submission.</p>
+
+    <blockquote>
+      "Admiral Buchanan suffered a badly broken leg from flying iron fragments. No longer able to command, he gave permission to surrender. A little more than three hours had elapsed since Tecumseh fired the first shot."
+      <span class="source-tag">— Encyclopedia of Alabama</span>
+    </blockquote>
+
+    <p>The Confederate flag came down from the Tennessee. The Battle of Mobile Bay — the naval engagement — was over. Mobile Bay now belonged to the Union. Fort Gaines surrendered on August 8. Fort Morgan, after a two-week bombardment, surrendered on August 23. The last open Confederate port on the Gulf of Mexico was closed. Mobile would not fall for another eight months — but without its harbor, it was already dying.</p>
+  </div>
+
+  <div class="pull-quote" style="background:var(--union);">
+    <blockquote>"Farragut's victory at Mobile Bay was one of the badly needed Union victories that, alongside Atlanta and Cedar Creek, ensured President Abraham Lincoln's reelection in November 1864 and turned the tide of the war in the Union's favor."</blockquote>
+    <cite>— American Battlefield Trust</cite>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════
+     CHAPTER 2 — BATTLE OF SPANISH FORT
+════════════════════════════════ -->
+<section id="spanish-fort" class="battle-page" style="background:var(--cream);">
+  <div class="chapter-opener">
+    <p class="chapter-label">Part Two</p>
+    <h2>Siege of Spanish Fort</h2>
+    <p class="chapter-sub">Twelve Days Against Impossible Odds</p>
+    <p class="chapter-dates">March 27 – April 8, 1865</p>
+  </div>
+
+  <div class="stats-bar" style="background:#1a1812;">
+    <div class="stat"><div class="stat-num">2,500</div><div class="stat-label">Confederate Defenders</div></div>
+    <div class="stat"><div class="stat-num">32,000</div><div class="stat-label">Union Troops</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Days of Siege</div></div>
+    <div class="stat"><div class="stat-num">90</div><div class="stat-label">Union Cannon at End</div></div>
+    <div class="stat"><div class="stat-num">657</div><div class="stat-label">Union Casualties</div></div>
+    <div class="stat"><div class="stat-num">744</div><div class="stat-label">Confederate Casualties</div></div>
+  </div>
+
+  <div class="commanders">
+    <div class="commander-side union">
+      <h4>Union</h4>
+      <div class="commander-name">Maj. Gen. Edward R. S. Canby</div>
+      <div class="commander-rank">Commander, Army of West Mississippi</div>
+      <p>Canby commanded the most powerful force ever assembled on the Gulf Coast — 32,000 men of the XIII and XVI Corps. Moving north from Fish River along the eastern shore of Mobile Bay, he aimed to reduce the Confederate defenses one by one and take the city that had defied the Union for three years. His methodical approach, criticized by Grant as too slow, was about to be tested against an unexpectedly fierce defense.</p>
+    </div>
+    <div class="commander-side confederate">
+      <h4>Confederate</h4>
+      <div class="commander-name">Brig. Gen. Randall L. Gibson</div>
+      <div class="commander-rank">Commander, Spanish Fort Garrison</div>
+      <p>Only 33 years old, Gibson commanded six Louisiana infantry regiments and five Alabama infantry regiments in a fortified position outnumbered ten to one. He "considerably astonished" his Union opponents with the ferocity of his defense, holding Spanish Fort for twelve days before executing a brilliantly planned nighttime evacuation that saved most of his command from capture.</p>
+    </div>
+  </div>
+
+  <!-- MAP 2: Spanish Fort -->
+  <div class="map-container" style="background:#1a2e1a;">
+    <h3>Spanish Fort — The Siege Lines</h3>
+    <p>The progressive Union encirclement of the Confederate defenses, March 27 – April 8, 1865</p>
+    <svg class="battle-map" viewBox="0 0 900 580" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="earth2" width="6" height="6" patternUnits="userSpaceOnUse">
+          <path d="M0 3 Q1.5 0 3 3 Q4.5 6 6 3" stroke="rgba(90,70,40,.3)" stroke-width=".5" fill="none"/>
+        </pattern>
+        <pattern id="water2" width="16" height="16" patternUnits="userSpaceOnUse">
+          <path d="M0 8 Q4 5 8 8 Q12 11 16 8" stroke="rgba(29,61,82,.4)" stroke-width=".7" fill="none"/>
+        </pattern>
+      </defs>
+
+      <!-- Background -->
+      <rect width="900" height="580" fill="#1a1a14"/>
+
+      <!-- Mobile Bay (left/west) -->
+      <path d="M0 0 L0 580 L180 580 L180 480 L160 400 L140 300 L150 200 L130 100 L120 0 Z" fill="#0d1e2a"/>
+      <rect x="0" y="0" width="180" height="580" fill="url(#water2)" opacity=".5"/>
+      <text x="70" y="300" fill="rgba(29,61,82,.8)" font-size="14" font-style="italic" fill="rgba(160,196,220,.4)" transform="rotate(-90,70,300)">Mobile Bay</text>
+
+      <!-- Blakeley River (north) -->
+      <path d="M0 0 L900 0 L900 80 L700 70 L500 65 L300 70 L180 80 L180 0 Z" fill="#0d1e2a" opacity=".7"/>
+      <text x="550" y="45" fill="rgba(160,196,220,.35)" font-size="12" font-style="italic" text-anchor="middle">Blakeley River / Tensaw Delta</text>
+
+      <!-- Land terrain -->
+      <rect x="180" y="80" width="720" height="500" fill="#1e1a0e"/>
+      <rect x="180" y="80" width="720" height="500" fill="url(#earth2)" opacity=".5"/>
+
+      <!-- Minette Bay (south) -->
+      <path d="M180 480 L180 580 L400 580 L400 500 L300 480 Z" fill="#0d1e2a" opacity=".7"/>
+      <text x="280" y="545" fill="rgba(160,196,220,.3)" font-size="10" font-style="italic" text-anchor="middle">Minette Bay</text>
+
+      <!-- Spanish Fort Hill (center, slightly east) -->
+      <ellipse cx="520" cy="320" rx="60" ry="45" fill="#2e2814" stroke="#4a3a18" stroke-width="2"/>
+      <text x="520" y="316" fill="rgba(212,188,150,.9)" font-size="11" font-weight="bold" text-anchor="middle">Spanish Fort</text>
+      <text x="520" y="330" fill="rgba(212,188,150,.7)" font-size="9" text-anchor="middle">High Ground</text>
+
+      <!-- Confederate defensive works (semi-circle) -->
+      <!-- Main earthworks arc -->
+      <path d="M300 180 Q350 120 450 100 Q550 90 650 110 Q720 130 760 180 Q800 240 800 320 Q800 400 760 460 Q720 510 650 530 Q580 545 520 540 Q440 535 380 500 Q300 460 260 380 Q230 310 260 230 Q275 200 300 180"
+            stroke="#8c2e18" stroke-width="3" fill="none" stroke-dasharray="8,4"/>
+
+      <!-- Confederate Redoubts -->
+      <rect x="420" y="95" width="28" height="18" fill="#6b1212" stroke="#b5922a" stroke-width="1.5" rx="2"/>
+      <text x="434" y="106" fill="#f2ead8" font-size="7" text-anchor="middle" font-weight="bold">McDermott</text>
+
+      <rect x="730" y="175" width="30" height="18" fill="#6b1212" stroke="#b5922a" stroke-width="1.5" rx="2"/>
+      <text x="745" y="186" fill="#f2ead8" font-size="7" text-anchor="middle" font-weight="bold">Fort Alexis</text>
+
+      <rect x="770" y="310" width="26" height="18" fill="#6b1212" stroke="#b5922a" stroke-width="1.5" rx="2"/>
+      <text x="783" y="321" fill="#f2ead8" font-size="7" text-anchor="middle" font-weight="bold">Red Fort</text>
+
+      <rect x="215" y="285" width="36" height="18" fill="#6b1212" stroke="#b5922a" stroke-width="1.5" rx="2"/>
+      <text x="233" y="296" fill="#f2ead8" font-size="7" text-anchor="middle" font-weight="bold">Old Span. Ft.</text>
+
+      <!-- Union parallel lines (3 successive approaches) -->
+      <!-- 1st Parallel (outermost) -->
+      <path d="M220 140 Q350 80 500 65 Q650 60 780 100 Q840 140 860 220 Q870 320 850 420 Q820 490 760 530 Q680 560 580 570 Q440 572 340 550 Q240 520 200 450 Q185 400 185 340"
+            stroke="#2a5f8c" stroke-width="2" fill="none" stroke-dasharray="4,4" opacity=".5"/>
+      <text x="870" y="300" fill="rgba(42,95,140,.7)" font-size="9" text-anchor="middle" transform="rotate(90,870,300)">1st Parallel</text>
+
+      <!-- 2nd Parallel -->
+      <path d="M210 160 Q340 100 500 87 Q640 82 760 118 Q820 155 840 240 Q850 330 830 420 Q800 478 740 512 Q660 540 560 548 Q430 550 330 530 Q235 505 205 440 Q190 395 190 340"
+            stroke="#2a5f8c" stroke-width="2" fill="none" stroke-dasharray="4,4" opacity=".65"/>
+      <text x="850" y="200" fill="rgba(42,95,140,.8)" font-size="9">2nd</text>
+
+      <!-- 3rd Parallel (closest, ~500 yards from Conf. line) -->
+      <path d="M215 185 Q330 125 490 110 Q630 105 745 140 Q800 172 818 255 Q825 340 805 420 Q776 465 720 495 Q640 520 540 526 Q420 528 330 510 Q240 490 215 435 Q198 395 198 340"
+            stroke="#2a5f8c" stroke-width="2.5" fill="none" opacity=".85"/>
+      <text x="830" y="175" fill="rgba(42,95,140,.9)" font-size="9" font-weight="bold">3rd Parallel</text>
+      <text x="830" y="186" fill="rgba(42,95,140,.7)" font-size="8">(~500 yds)</text>
+
+      <!-- Zigzag approach trenches -->
+      <path d="M750 495 L745 470 L760 445 L755 420 L770 400 L765 375" stroke="#2a5f8c" stroke-width="1.5" fill="none" opacity=".6"/>
+
+      <!-- Union artillery batteries -->
+      <circle cx="340" cy="118" r="8" fill="#2a5f8c" opacity=".7"/>
+      <circle cx="560" cy="72" r="8" fill="#2a5f8c" opacity=".7"/>
+      <circle cx="760" cy="145" r="8" fill="#2a5f8c" opacity=".7"/>
+      <circle cx="840" cy="300" r="8" fill="#2a5f8c" opacity=".7"/>
+      <text x="420" y="70" fill="rgba(42,95,140,.8)" font-size="9" text-anchor="middle">Union Artillery Positions (90 guns)</text>
+
+      <!-- Breakthrough point - 8th Iowa -->
+      <circle cx="420" cy="105" r="10" fill="rgba(255,200,50,.7)" stroke="#f2ead8" stroke-width="1.5"/>
+      <text x="420" y="80" fill="rgba(255,200,50,.9)" font-size="9" text-anchor="middle" font-weight="bold">8th Iowa</text>
+      <text x="420" y="70" fill="rgba(255,200,50,.8)" font-size="8" text-anchor="middle">Breakthrough</text>
+      <text x="420" y="60" fill="rgba(255,200,50,.7)" font-size="8" text-anchor="middle">Apr 8, 1865</text>
+
+      <!-- Evacuation route (night of April 8) -->
+      <path d="M520 320 L300 280 L230 250 L220 200 L210 140 L200 80 L180 40"
+            stroke="rgba(181,146,42,.6)" stroke-width="2" fill="none" stroke-dasharray="6,4"/>
+      <text x="185" y="35" fill="rgba(181,146,42,.7)" font-size="8" font-style="italic">Confederate evacuation</text>
+      <text x="185" y="46" fill="rgba(181,146,42,.7)" font-size="8" font-style="italic">route (Apr 8 night)</text>
+
+      <!-- Fish River (south, approach) -->
+      <text x="600" y="570" fill="rgba(160,196,220,.3)" font-size="10" font-style="italic" text-anchor="middle">D'Olive Bay</text>
+
+      <!-- Canby's approach arrow -->
+      <path d="M600 570 L560 500" stroke="#2a5f8c" stroke-width="2" fill="none" marker-end="url(#arrow-u)" opacity=".5"/>
+      <text x="620" y="555" fill="rgba(42,95,140,.6)" font-size="9" font-style="italic">Canby's advance</text>
+
+      <!-- Legend -->
+      <rect x="15" y="390" width="160" height="135" fill="rgba(0,0,0,.7)" rx="4"/>
+      <text x="25" y="408" fill="var(--cannon)" font-size="10" font-weight="bold" font-family="Oswald,sans-serif">LEGEND</text>
+      <path d="M25 418 L55 418" stroke="#8c2e18" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="60" y="421" fill="rgba(181,146,42,.9)" font-size="9">Confederate Works</text>
+      <path d="M25 432 L55 432" stroke="#2a5f8c" stroke-width="2"/>
+      <text x="60" y="435" fill="#a0c4e0" font-size="9">Union 3rd Parallel</text>
+      <path d="M25 446 L55 446" stroke="#2a5f8c" stroke-width="2" stroke-dasharray="3,3"/>
+      <text x="60" y="449" fill="#a0c4e0" font-size="9">Union 1st &amp; 2nd Parallels</text>
+      <circle cx="32" cy="461" r="5" fill="#2a5f8c" opacity=".7"/>
+      <text x="44" y="464" fill="#a0c4e0" font-size="9">Union Artillery</text>
+      <circle cx="32" cy="475" r="7" fill="rgba(255,200,50,.7)" stroke="#f2ead8" stroke-width="1"/>
+      <text x="44" y="478" fill="rgba(255,200,50,.8)" font-size="9">Breakthrough Point</text>
+      <path d="M25 489 L55 489" stroke="rgba(181,146,42,.6)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="60" y="492" fill="rgba(181,146,42,.7)" font-size="9">Evacuation Route</text>
+      <rect x="25" y="497" width="14" height="8" fill="#6b1212" stroke="#b5922a" stroke-width="1" rx="1"/>
+      <text x="44" y="504" fill="rgba(181,146,42,.9)" font-size="9">Confederate Redoubt</text>
+
+      <!-- Title -->
+      <text x="450" y="20" fill="var(--cannon)" font-size="14" font-weight="bold" text-anchor="middle" font-family="Oswald,sans-serif">SIEGE OF SPANISH FORT — MARCH 27 – APRIL 8, 1865</text>
+      <text x="450" y="36" fill="rgba(212,188,150,.5)" font-size="10" text-anchor="middle" font-style="italic">Three Union parallels close on the Confederate works; breakthrough and evacuation, April 8</text>
+    </svg>
+  </div>
+
+  <div class="content-body">
+    <p class="dropcap">The land campaign to take Mobile began on March 13, 1865, when a massive column of 32,000 Union soldiers started moving north from Fish River on the eastern side of Mobile Bay. Some came by water; others marched up from Fort Morgan. A second column of 13,000 men under Brig. Gen. Frederick Steele departed Pensacola, swinging west toward the Tensaw River and then south to invest Fort Blakeley from the rear, giving the impression it was headed toward Montgomery before turning toward the bay.</p>
+
+    <p>Spanish Fort sat on a commanding hilltop with a broad flat summit, steep sides, and a 360-degree view of the surrounding terrain. The Confederates had constructed trenches and artillery redoubts in a semicircle two miles long and 1,000 yards wide between Minette Bay and D'Olive Bay. Fort McDermott guarded the land approaches. Old Spanish Fort — built on the site of the original Spanish fortification of 1780, nearly a century earlier — covered the river approaches. Six Louisiana infantry regiments under Gibson and five Alabama infantry regiments together held these works. Their total strength was perhaps 2,500 men against Canby's 32,000.</p>
+
+    <h3>The Siege Tightens</h3>
+    <p>When Canby's forces rendezvoused at Danley's Ferry on March 27 and immediately began to invest Spanish Fort, General Gibson was outnumbered approximately ten to one. The Union forces had enveloped the fort by April 1 and began constructing their classic siege works: three parallel systems of earthworks, each one closer to the Confederate position than the last. Engineers worked night and day. The armies skirmished constantly. By April 8, Canby had ninety cannon aimed at the Confederate lines, compared to the forty-seven available to Gibson's defenders — many of which were positioned to defend against a water-borne attack and could not be turned to face the land threat.</p>
+
+    <blockquote>
+      "Despite being outnumbered about 10 to 1, 33-year-old Brig. Gen. Randall Lee Gibson mounted a skillful and spirited defense that 'considerably astonished' his Union opponents."
+      <span class="source-tag">— Paul Brueske, Digging All Night and Fighting All Day (2024)</span>
+    </blockquote>
+
+    <p>On April 8, the Federals opened a massive bombardment. Confederate guns replied, and throughout the day flame and smoke enveloped the battlefield as the ground shook for miles around. Late that afternoon, the 8th Iowa Infantry broke through the Confederate lines at the northern end of the battlefield. Gibson knew the position could not be held another day.</p>
+
+    <h3>The Night Evacuation</h3>
+    <p>Under cover of darkness on the night of April 8–9, Gibson executed a brilliantly managed withdrawal. The Confederates spiked their guns, destroyed the gun carriages, and slipped away toward the Blakeley River. Many made their way to Mobile by boat. Gibson sent approximately 1,000 troops to reinforce the garrison at Fort Blakeley, five miles to the north. About midnight, federal forces realized the vast majority of the Confederates had left. Canby's men captured approximately 500 men who had not escaped and large quantities of artillery shells and gunpowder.</p>
+
+    <p>The fall of Spanish Fort, which had stood against overwhelming Union forces for twelve days, freed Canby to concentrate his entire strength on one last obstacle: Fort Blakeley, where the final act of the Mobile Campaign — and of the Civil War itself — was already beginning.</p>
+  </div>
+
+  <div class="pull-quote" style="background:var(--confederate);">
+    <blockquote>"With a force of only a couple of thousand men, they defended Spanish Fort for 12 days against a Union army 15 times the size of their own."</blockquote>
+    <cite>— Explore Southern History</cite>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════
+     CHAPTER 3 — BATTLE OF FORT BLAKELEY
+════════════════════════════════ -->
+<section id="blakeley" class="battle-page" style="background:var(--parchment);">
+  <div class="chapter-opener">
+    <p class="chapter-label">Part Three</p>
+    <h2>Fort Blakeley</h2>
+    <p class="chapter-sub">The Last Major Battle of the Civil War</p>
+    <p class="chapter-dates">April 2 – 9, 1865</p>
+  </div>
+
+  <div class="stats-bar" style="background:var(--gunmetal);">
+    <div class="stat"><div class="stat-num">16,000</div><div class="stat-label">Union Troops</div></div>
+    <div class="stat"><div class="stat-num">~3,500</div><div class="stat-label">Confederate Defenders</div></div>
+    <div class="stat"><div class="stat-num">5,000</div><div class="stat-label">USCT Soldiers</div></div>
+    <div class="stat"><div class="stat-num">9</div><div class="stat-label">Redoubts &amp; Forts</div></div>
+    <div class="stat"><div class="stat-num">~30 min</div><div class="stat-label">Duration of Assault</div></div>
+    <div class="stat"><div class="stat-num">13</div><div class="stat-label">Medals of Honor</div></div>
+  </div>
+
+  <div class="commanders">
+    <div class="commander-side union">
+      <h4>Union</h4>
+      <div class="commander-name">Maj. Gen. E.R.S. Canby</div>
+      <div class="commander-rank">+ Brig. Gen. Frederick Steele</div>
+      <p>Steele's column from Pensacola arrived at Fort Blakeley on April 1, having marched through muddy spring roads after fighting several sharp engagements. His 1st Division under Brig. Gen. John P. Hawkins included three brigades of United States Colored Troops — former enslaved and free Black men who would play a decisive role in the assault. With Spanish Fort fallen, Canby now concentrated 16,000 men against the final Confederate stronghold.</p>
+    </div>
+    <div class="commander-side confederate">
+      <h4>Confederate</h4>
+      <div class="commander-name">Brig. Gen. St. John R. Liddell</div>
+      <div class="commander-rank">Commander, Fort Blakeley Garrison</div>
+      <p>Liddell commanded roughly 3,500 men in a nine-redoubt defensive line stretching nearly three miles across the pine-covered bluffs overlooking the Mobile-Tensaw Delta. His force included veteran Missouri and Mississippi troops under Brig. Gen. Francis M. Cockrell and Alabama Brigade reserves — many of them teenage conscripts fighting their first and last battle on the last official day of the Civil War.</p>
+    </div>
+  </div>
+
+  <!-- MAP 3: Fort Blakeley -->
+  <div class="map-container" style="background:#0d1a0d;">
+    <h3>Fort Blakeley — The Final Assault</h3>
+    <p>The nine Confederate redoubts, three Union parallels, and the 5:30 p.m. charge of April 9, 1865</p>
+    <svg class="battle-map" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="pine" width="15" height="15" patternUnits="userSpaceOnUse">
+          <path d="M7.5 2 L3 13 L12 13 Z" fill="rgba(30,50,20,.3)" stroke="none"/>
+        </pattern>
+        <pattern id="water3" width="16" height="16" patternUnits="userSpaceOnUse">
+          <path d="M0 8 Q4 5 8 8 Q12 11 16 8" stroke="rgba(29,61,82,.4)" stroke-width=".7" fill="none"/>
+        </pattern>
+        <marker id="arrowB" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+          <polygon points="0,0 7,3.5 0,7" fill="#2a5f8c"/>
+        </marker>
+      </defs>
+
+      <!-- Background -->
+      <rect width="900" height="600" fill="#0d140a"/>
+
+      <!-- Tensaw River / Blakeley River (east) -->
+      <path d="M760 0 L900 0 L900 600 L760 600 L740 500 L730 400 L735 300 L730 200 L745 100 L760 0 Z" fill="#0d1e2a"/>
+      <rect x="750" y="0" width="150" height="600" fill="url(#water3)" opacity=".6"/>
+      <text x="825" y="300" fill="rgba(160,196,220,.3)" font-size="13" font-style="italic" text-anchor="middle" transform="rotate(90,825,300)">Tensaw / Blakeley River</text>
+
+      <!-- Blakeley old town site (north, near river) -->
+      <text x="700" y="40" fill="rgba(212,188,150,.4)" font-size="11" font-style="italic" text-anchor="middle" font-family="Playfair Display,serif">Old Blakeley</text>
+      <text x="700" y="54" fill="rgba(212,188,150,.25)" font-size="9" text-anchor="middle">(former county seat)</text>
+
+      <!-- Mobile Bay (far west hint) -->
+      <text x="30" y="340" fill="rgba(160,196,220,.25)" font-size="11" font-style="italic" transform="rotate(-90,30,340)">→ Mobile Bay</text>
+
+      <!-- Pine forest terrain -->
+      <rect x="0" y="0" width="760" height="600" fill="#1a2010"/>
+      <rect x="0" y="0" width="760" height="600" fill="url(#pine)" opacity=".6"/>
+
+      <!-- Confederate defensive arc (9 redoubts, roughly north-south) -->
+      <!-- The line runs roughly north-south, facing west (Union approach) -->
+      <!-- Redoubts 1-9, north to south -->
+      
+      <!-- Redoubt 1 (northernmost) -->
+      <polygon points="490,55 510,55 515,75 495,80 480,70" fill="#6b1212" stroke="#b5922a" stroke-width="1.5"/>
+      <text x="497" y="66" fill="#f2ead8" font-size="8" text-anchor="middle" font-weight="bold">R1</text>
+      
+      <!-- Redoubt 2 -->
+      <polygon points="510,110 530,108 535,128 515,133 500,120" fill="#6b1212" stroke="#b5922a" stroke-width="1.5"/>
+      <text x="518" y="121" fill="#f2ead8" font-size="8" text-anchor="middle" font-weight="bold">R2</text>
+      
+      <!-- Redoubt 3 -->
+      <polygon points="530,168 550,165 555,185 535,190 520,178" fill="#6b1212" stroke="#b5922a" stroke-width="1.5"/>
+      <text x="538" y="179" fill="#f2ead8" font-size="8" text-anchor="middle" font-weight="bold">R3</text>
+      
+      <!-- Redoubt 4 (KEY - breakthrough point) -->
+      <polygon points="555,228 580,224 586,250 562,256 548,240" fill="#6b1212" stroke="#f5c842" stroke-width="2.5"/>
+      <text x="568" y="241" fill="#f5c842" font-size="8" text-anchor="middle" font-weight="bold">R4★</text>
+      
+      <!-- Redoubt 5 -->
+      <polygon points="570,295 592,291 597,311 577,316 562,304" fill="#6b1212" stroke="#b5922a" stroke-width="1.5"/>
+      <text x="580" y="306" fill="#f2ead8" font-size="8" text-anchor="middle" font-weight="bold">R5</text>
+      
+      <!-- Redoubt 6 -->
+      <polygon points="572,360 594,356 599,376 579,381 564,369" fill="#6b1212" stroke="#b5922a" stroke-width="1.5"/>
+      <text x="582" y="370" fill="#f2ead8" font-size="8" text-anchor="middle" font-weight="bold">R6</text>
+      
+      <!-- Redoubt 7 -->
+      <polygon points="562,420 584,416 589,436 569,441 554,429" fill="#6b1212" stroke="#b5922a" stroke-width="1.5"/>
+      <text x="572" y="431" fill="#f2ead8" font-size="8" text-anchor="middle" font-weight="bold">R7</text>
+      
+      <!-- Redoubt 8 -->
+      <polygon points="540,476 562,472 567,492 547,497 532,485" fill="#6b1212" stroke="#b5922a" stroke-width="1.5"/>
+      <text x="550" y="487" fill="#f2ead8" font-size="8" text-anchor="middle" font-weight="bold">R8</text>
+      
+      <!-- Redoubt 9 (southernmost) -->
+      <polygon points="510,530 532,526 537,546 517,551 502,539" fill="#6b1212" stroke="#b5922a" stroke-width="1.5"/>
+      <text x="520" y="540" fill="#f2ead8" font-size="8" text-anchor="middle" font-weight="bold">R9</text>
+      
+      <!-- Confederate connecting earthworks -->
+      <path d="M495 68 L515 120 L535 178 L562 240 L578 304 L582 366 L570 430 L547 484 L520 535"
+            stroke="#6b1212" stroke-width="8" fill="none" opacity=".4"/>
+      <path d="M495 68 L515 120 L535 178 L562 240 L578 304 L582 366 L570 430 L547 484 L520 535"
+            stroke="#8c2e18" stroke-width="2" fill="none" stroke-dasharray="10,5"/>
+
+      <!-- Union 3 parallels (west of Confederate works) -->
+      <!-- 3rd Parallel (closest, ~500 yards out) -->
+      <path d="M300 40 L330 100 L350 180 L360 260 L358 340 L352 420 L340 490 L320 555"
+            stroke="#2a5f8c" stroke-width="2.5" fill="none"/>
+      <text x="280" y="35" fill="rgba(42,95,140,.9)" font-size="9" font-weight="bold">3rd Parallel</text>
+      
+      <!-- 2nd Parallel -->
+      <path d="M200 40 L230 100 L248 180 L258 260 L256 340 L250 420 L238 490 L218 555"
+            stroke="#2a5f8c" stroke-width="2" fill="none" stroke-dasharray="5,4" opacity=".7"/>
+      <text x="178" y="35" fill="rgba(42,95,140,.75)" font-size="9">2nd Parallel</text>
+      
+      <!-- 1st Parallel (outermost) -->
+      <path d="M100 40 L128 100 L146 180 L155 260 L153 340 L148 420 L136 490 L118 555"
+            stroke="#2a5f8c" stroke-width="1.5" fill="none" stroke-dasharray="3,5" opacity=".5"/>
+      <text x="78" y="35" fill="rgba(42,95,140,.55)" font-size="9">1st Parallel</text>
+      
+      <!-- Zigzag approach trenches -->
+      <path d="M350 240 L380 230 L390 210 L420 205 L430 220 L460 215 L480 225 L548 238"
+            stroke="#2a5f8c" stroke-width="1.5" fill="none" opacity=".6"/>
+
+      <!-- USCT position (right / north flank) -->
+      <rect x="160" y="70" width="100" height="34" fill="rgba(42,95,140,.25)" stroke="#2a5f8c" stroke-width="1.5" rx="3"/>
+      <text x="210" y="83" fill="#a0c4e0" font-size="9" text-anchor="middle" font-weight="bold">USCT Division</text>
+      <text x="210" y="95" fill="#a0c4e0" font-size="8" text-anchor="middle">Hawkins / 5,000 men</text>
+      <text x="210" y="106" fill="rgba(160,196,220,.6)" font-size="7.5" text-anchor="middle">Facing R1 &amp; R2</text>
+      
+      <!-- USCT charge arrows -->
+      <path d="M260 88 L320 78 L365 72 L490 62" stroke="#a0c4e0" stroke-width="2" fill="none" marker-end="url(#arrowB)" opacity=".8"/>
+      <path d="M260 96 L320 110 L365 118 L509 123" stroke="#a0c4e0" stroke-width="2" fill="none" marker-end="url(#arrowB)" opacity=".7"/>
+      
+      <!-- White Union troops (center and south) -->
+      <rect x="140" y="240" width="120" height="30" fill="rgba(42,95,140,.2)" stroke="#2a5f8c" stroke-width="1" rx="3"/>
+      <text x="200" y="253" fill="#a0c4e0" font-size="9" text-anchor="middle">XIII Corps</text>
+      <text x="200" y="265" fill="rgba(160,196,220,.6)" font-size="8" text-anchor="middle">Center &amp; South</text>
+      
+      <!-- Main charge arrows (5:30 PM) -->
+      <path d="M260 255 L355 245" stroke="#2a5f8c" stroke-width="2" fill="none" marker-end="url(#arrowB)"/>
+      <path d="M260 310 L350 305" stroke="#2a5f8c" stroke-width="2" fill="none" marker-end="url(#arrowB)"/>
+      <path d="M260 370 L348 365" stroke="#2a5f8c" stroke-width="2" fill="none" marker-end="url(#arrowB)"/>
+      <path d="M260 430 L336 425" stroke="#2a5f8c" stroke-width="2" fill="none" marker-end="url(#arrowB)"/>
+      <path d="M255 490 L325 482" stroke="#2a5f8c" stroke-width="2" fill="none" marker-end="url(#arrowB)"/>
+
+      <!-- Breakthrough at R4 highlighted -->
+      <circle cx="568" cy="241" r="20" fill="none" stroke="#f5c842" stroke-width="2.5" opacity=".8"/>
+      <text x="630" y="220" fill="#f5c842" font-size="9" font-weight="bold">83rd Ohio</text>
+      <text x="630" y="232" fill="#f5c842" font-size="9">breaches R4</text>
+      <text x="630" y="244" fill="rgba(245,200,66,.7)" font-size="8">5:45 pm, April 9</text>
+      <path d="M625 240 L595 241" stroke="#f5c842" stroke-width="1" fill="none"/>
+
+      <!-- 5:30 PM charge label -->
+      <text x="150" y="200" fill="rgba(42,95,140,.8)" font-size="11" font-weight="bold" font-family="Oswald,sans-serif">5:30 PM CHARGE</text>
+      <text x="150" y="213" fill="rgba(42,95,140,.7)" font-size="9" font-style="italic">April 9, 1865</text>
+
+      <!-- Confederate escape route (to river) -->
+      <path d="M600 300 L680 290 L740 270" stroke="rgba(181,146,42,.5)" stroke-width="1.5" fill="none" stroke-dasharray="5,4"/>
+      <text x="700" y="310" fill="rgba(181,146,42,.6)" font-size="8" font-style="italic">Flight to river</text>
+
+      <!-- Steele approach (from east/Pensacola) -->
+      <path d="M900 400 L760 380" stroke="#2a5f8c" stroke-width="2" fill="none" stroke-dasharray="6,4" opacity=".5"/>
+      <text x="820" y="430" fill="rgba(42,95,140,.5)" font-size="9" font-style="italic">Steele from</text>
+      <text x="820" y="441" fill="rgba(42,95,140,.5)" font-size="9" font-style="italic">Pensacola</text>
+
+      <!-- Mine indicators along Confederate front -->
+      <circle cx="430" cy="120" r="3" fill="rgba(181,146,42,.7)"/>
+      <circle cx="450" cy="200" r="3" fill="rgba(181,146,42,.7)"/>
+      <circle cx="460" cy="280" r="3" fill="rgba(181,146,42,.7)"/>
+      <circle cx="452" cy="360" r="3" fill="rgba(181,146,42,.7)"/>
+      <circle cx="435" cy="440" r="3" fill="rgba(181,146,42,.7)"/>
+      <text x="408" y="285" fill="rgba(181,146,42,.55)" font-size="8" text-anchor="middle" font-style="italic">land mines</text>
+
+      <!-- Legend -->
+      <rect x="15" y="390" width="170" height="170" fill="rgba(0,0,0,.7)" rx="4"/>
+      <text x="25" y="408" fill="var(--cannon)" font-size="10" font-weight="bold" font-family="Oswald,sans-serif">LEGEND</text>
+      <polygon points="25,415 35,415 38,425 28,428 22,422" fill="#6b1212" stroke="#b5922a" stroke-width="1"/>
+      <text x="44" y="423" fill="rgba(181,146,42,.9)" font-size="9">Confederate Redoubt</text>
+      <path d="M25 435 L55 435" stroke="#8c2e18" stroke-width="2" stroke-dasharray="8,4"/>
+      <text x="60" y="438" fill="rgba(181,146,42,.8)" font-size="9">Confederate Line</text>
+      <path d="M25 449 L55 449" stroke="#2a5f8c" stroke-width="2.5"/>
+      <text x="60" y="452" fill="#a0c4e0" font-size="9">Union 3rd Parallel</text>
+      <path d="M25 463 L55 463" stroke="#a0c4e0" stroke-width="1.5" fill="none"/>
+      <text x="60" y="466" fill="#a0c4e0" font-size="9">USCT Charge</text>
+      <path d="M25 477 L55 477" stroke="#2a5f8c" stroke-width="1.5" fill="none"/>
+      <text x="60" y="480" fill="#a0c4e0" font-size="9">XIII Corps Charge</text>
+      <circle cx="32" cy="491" r="5" fill="none" stroke="#f5c842" stroke-width="1.5"/>
+      <text x="44" y="494" fill="#f5c842" font-size="9">Breakthrough (R4★)</text>
+      <circle cx="32" cy="505" r="3" fill="rgba(181,146,42,.7)"/>
+      <text x="44" y="508" fill="rgba(181,146,42,.7)" font-size="9">Land mines</text>
+      <rect x="25" y="516" width="22" height="12" fill="rgba(42,95,140,.25)" stroke="#2a5f8c" stroke-width="1" rx="1"/>
+      <text x="53" y="524" fill="#a0c4e0" font-size="9">USCT Division</text>
+      <path d="M25 535 L55 535" stroke="rgba(181,146,42,.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="60" y="538" fill="rgba(181,146,42,.6)" font-size="9">Confederate flight</text>
+      <text x="44" y="550" fill="rgba(42,95,140,.5)" font-size="9">⟵ to Mobile Bay (west)</text>
+
+      <!-- Title -->
+      <text x="380" y="22" fill="var(--cannon)" font-size="14" font-weight="bold" text-anchor="middle" font-family="Oswald,sans-serif">BATTLE OF FORT BLAKELEY — APRIL 9, 1865</text>
+      <text x="380" y="38" fill="rgba(212,188,150,.5)" font-size="10" text-anchor="middle" font-style="italic">Nine Confederate redoubts; Union charge at 5:30 PM; R4 breached as Lee surrenders at Appomattox</text>
+    </svg>
+  </div>
+
+  <div class="content-body">
+    <p class="dropcap">Fort Blakeley was, in 1865, a ghost town wearing a uniform. The city of Blakeley had been chartered in 1814 and for a decade had rivaled Mobile as a Gulf Coast port of consequence. Then yellow fever arrived. The population collapsed. The buildings rotted. By the time Confederate engineers surveyed the site in 1862, looking for positions to defend Mobile's eastern approaches, they found an impressive hilltop overlooking the Mobile-Tensaw Delta and almost nothing else. What they built there would become the site of the last major battle of the American Civil War.</p>
+
+    <p>The fort's nine connected redoubts and linking breastworks stretched nearly three miles across the pine-covered bluffs, mounting forty-one artillery pieces including mortars and protected by Confederate ironclads on the adjacent river. General Liddell's 3,500 defenders — veterans from Missouri and Mississippi mixed with Alabama reserves, many of them teenagers — had been watching the siege of Spanish Fort to the south with growing unease. When Spanish Fort fell on the night of April 8, and Gibson's survivors began arriving at Blakeley, everyone understood what was coming.</p>
+
+    <h3>The United States Colored Troops</h3>
+    <p>The Union force assembling against Fort Blakeley included approximately 5,000 men of the United States Colored Troops — one of the largest concentrations of African American soldiers in any single battle of the Civil War. They had marched from Pensacola with Steele's column, fighting sharp engagements along the way through muddy spring roads. Many had been enslaved men. Some had been free Black men from New Orleans, whose ancestors had been in Louisiana for generations. Their nine regiments — the 47th, 48th, 50th, 51st, 68th, 73rd, 76th, 82nd, and 86th Infantries — were organized into one division under Brig. Gen. John P. Hawkins and positioned on the right flank of the Union army, fronting Redoubts 1 and 2 on the Confederate left.</p>
+
+    <p>The 73rd Regiment of the USCT — composed of men largely from New Orleans, among the first Black troops accepted into the Union army — traced its origins to a free Black militia unit that had actually offered itself for Confederate service at the beginning of the war and been refused on account of race. Now, at Fort Blakeley, its officers Lt. Col. Henry C. Merriam and Capt. Henry C. Nichols would volunteer to lead their men in a reconnaissance of the Confederate lines in advance of the assault — and both would be awarded the Medal of Honor.</p>
+
+    <blockquote>
+      "Hawkins' men probed the Confederate left on the afternoon of April 9, 1865, becoming involved in heavy skirmishing hours before the general assault on the rebel lines at 5:30 PM."
+      <span class="source-tag">— Historic Blakeley State Park historical marker, USCT at Fort Blakeley</span>
+    </blockquote>
+
+    <h3>5:30 PM — The Last Charge</h3>
+    <p>Canby passed the order along the lines: a sweeping, united charge at 5:30 PM on April 9. He was afraid the Confederates might vanish overnight as they had at Spanish Fort — and he would not let them. Unknown to every soldier on both sides, that same afternoon, 800 miles to the northeast at a farmhouse called Appomattox Court House in Virginia, Robert E. Lee was signing the surrender of the Army of Northern Virginia to Ulysses S. Grant.</p>
+
+    <p>Across a nearly three-mile front, federal troops emerged from their trenches in places less than 1,000 yards from the Confederate works and charged. They began taking casualties almost immediately — rifle fire, artillery, and the land mines planted in the ground before the Confederate works. Men tripped the mines and died yards from where they started. But the surging mass kept moving.</p>
+
+    <p>The breakthrough came when a Union brigade led by the 83rd Ohio Infantry stormed over the walls of Redoubt 4. Capt. Patrick H. Pentzer of the 97th Illinois was the first man into Redoubt 4, and received the personal surrender of Brig. Gen. Francis M. Cockrell inside — earning his Medal of Honor in the last few minutes of the last major battle of the war. The Confederate lines collapsed. Union troops poured in. Men who didn't surrender fled through the thicket beyond their works or ran toward the river. Some reached Mobile. Others were captured. Some drowned trying to escape.</p>
+
+    <blockquote>
+      "Probably the last charge of this war, it was as gallant as any on record... The loss here was great; but no obstacle hindered, no degree of carnage daunted the men."
+      <span class="source-tag">— Harper's Weekly, on the assault at Fort Blakeley, 1865</span>
+    </blockquote>
+
+    <p>When the smoke cleared, approximately 75 Confederate defenders lay dead. Over 2,800 were prisoners of war. Union casualties during the full siege and assault were approximately 150 killed and 650 wounded. Thirteen soldiers received the Congressional Medal of Honor for their actions at Fort Blakeley. Liddell surrendered his command to Canby approximately six hours after Lee had surrendered at Appomattox — six hours after, by most accounts, the Civil War had already ended.</p>
+
+    <h3>The Aftermath</h3>
+    <p>Some Confederate soldiers in Redoubts 1 and 2, where the USCT had charged, were afraid they would not be treated fairly and rushed to neighboring redoubts to surrender to white troops instead. In the chaos of the final minutes, some Union USCT soldiers did fire on Confederates who had already surrendered — the rage of men whose comrades had been massacred by Confederate troops at Fort Pillow, Tennessee, less than a year earlier, surfacing in the final moments of the final battle. Union officers moved to stop it; one was killed and another wounded in the effort. Order was quickly restored. The incident left a shadow, but no sanction.</p>
+
+    <p>Two days after Fort Blakeley fell, Batteries Huger and Tracy were abandoned. On April 12, 1865, Mobile Mayor Robert H. Slough surrendered the city without a fight. Gen. Dabney Maury had evacuated his remaining 4,500 men on the evening of April 11. The last great Confederate port on the Gulf of Mexico — the city that had defied the Union for three years, that Farragut had sealed off the previous August, that 32,000 soldiers had marched through Baldwin County to take — was at last in Union hands.</p>
+  </div>
+
+  <!-- MEDALS -->
+  <div class="medals-section">
+    <h3>Medals of Honor — Fort Blakeley</h3>
+    <p class="intro">Thirteen soldiers received the Congressional Medal of Honor for their actions in the assault of April 9, 1865</p>
+    <div class="medal-list">
+      <div class="medal-item"><strong>Henry C. Merriam</strong>73rd USCT Infantry — Volunteered to lead his men in advance of orders; made a gallant assault on Confederate positions</div>
+      <div class="medal-item"><strong>Patrick H. Pentzer</strong>97th Illinois Infantry — First to enter Redoubt 4; received the personal surrender of Gen. Cockrell</div>
+      <div class="medal-item"><strong>Henry C. Nichols</strong>73rd USCT Infantry — Led his company forward in advance of orders; severely wounded in the assault</div>
+      <div class="medal-item"><strong>Charles H. Andrews</strong>3rd Maryland Infantry — Captured the flag of the 5th Alabama Reserves inside the Confederate works</div>
+      <div class="medal-item"><strong>James Dempsey</strong>96th Ohio Infantry — Distinguished bravery during the charge and capture of Confederate fortifications</div>
+      <div class="medal-item"><strong>Marcus M. Parks</strong>11th Wisconsin Infantry — Carried the colors through the assault despite severe enemy fire</div>
+      <div class="medal-item"><strong>+ 7 additional recipients</strong>Illinois, Ohio, Wisconsin, and USCT regiments — For conspicuous bravery in the final assault on the Confederate earthworks</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════
+     LEGACY CHAPTER
+════════════════════════════════ -->
+<section id="legacy">
+  <div class="chapter-opener">
+    <p class="chapter-label">Legacy</p>
+    <h2>After the Guns</h2>
+    <p class="chapter-sub">The Campaign That Closed an Era</p>
+    <div style="width:60px;height:2px;background:var(--cannon);margin:1.5rem auto 0;"></div>
+  </div>
+
+  <div class="significance" style="background:var(--smoke);">
+    <h3>Why These Battles Matter</h3>
+    <div class="sig-grid">
+      <div class="sig-item">
+        <h4>The Last Confederate Port</h4>
+        <p>Mobile Bay's closure in August 1864 eliminated the Confederacy's last significant Gulf port, cutting off vital supplies from Havana and the Caribbean. The psychological and strategic blow to the South was immense — and arriving alongside Atlanta's fall, it sealed Lincoln's reelection.</p>
+      </div>
+      <div class="sig-item">
+        <h4>The Last Major Naval Battle</h4>
+        <p>The Battle of Mobile Bay was the last major naval engagement of the Civil War. Farragut's "Damn the Torpedoes" has entered American culture as a lasting expression of audacity under fire — though scholars still debate what he actually said, and whether anyone could have heard him above the guns.</p>
+      </div>
+      <div class="sig-item">
+        <h4>The Last Major Land Battle</h4>
+        <p>Fort Blakeley on April 9, 1865, was the last combined-force battle of the Civil War — fought, unknown to either army, hours after Lee's surrender at Appomattox. The men who died there died for a cause that had already ended. They did not know it yet.</p>
+      </div>
+      <div class="sig-item">
+        <h4>The USCT at Blakeley</h4>
+        <p>The role of 5,000 United States Colored Troops in the assault on Fort Blakeley represents one of the most significant concentrations of African American soldiers in any battle of the war. Men who had been enslaved charged the earthworks of their former world and helped end it.</p>
+      </div>
+      <div class="sig-item">
+        <h4>Baldwin County's Place in History</h4>
+        <p>The same ground where the Baldwin County Historical Society would one day preserve the family stories of the Wynns, the Pierces, and the Sharretts was the theater of the Civil War's final act. Spanish Fort, where condominiums now cover the earthworks, and Blakeley, still preserved in state parkland, are where the long war ended.</p>
+      </div>
+      <div class="sig-item">
+        <h4>Historic Blakeley State Park</h4>
+        <p>Today 3,800 acres of the original battlefield are preserved at Historic Blakeley State Park north of Spanish Fort — the largest National Register of Historic Places site east of the Mississippi River. Visitors can still walk the Confederate earthworks, the Union parallels, and the terrain of Redoubt 4, where the last charge of the Civil War crested a hill overlooking the Mobile-Tensaw Delta.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline" style="background:var(--parchment);">
+    <h3>The Mobile Campaign — Complete Timeline</h3>
+    <div class="tl-item">
+      <div class="tl-date">Aug 3<br>1864</div>
+      <div class="tl-content"><strong>Army Lands on Dauphin Island</strong>Gen. Gordon Granger lands 1,500 infantry on Dauphin Island under naval protection, beginning the siege of Fort Gaines while Farragut finalizes his fleet.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Aug 5<br>1864</div>
+      <div class="tl-content"><strong>Battle of Mobile Bay</strong>Farragut's 18-ship fleet enters Mobile Bay at dawn. USS Tecumseh sinks in 30 seconds after striking a torpedo; 94 men lost. Farragut's famous order rallies the fleet. CSS Tennessee surrenders after three hours of battle. Admiral Buchanan captured, wounded.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Aug 8<br>1864</div>
+      <div class="tl-content"><strong>Fort Gaines Surrenders</strong>Under combined naval and army pressure, Col. Charles Anderson surrenders Fort Gaines on Dauphin Island. 800 prisoners captured; the western entrance to Mobile Bay secured.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Aug 23<br>1864</div>
+      <div class="tl-content"><strong>Fort Morgan Surrenders</strong>After a two-week bombardment — including fire from the captured and renamed USS Tennessee — Brig. Gen. Richard Page surrenders Fort Morgan. Mobile Bay is fully in Union hands. The port is closed.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Jan 18<br>1865</div>
+      <div class="tl-content"><strong>Grant Orders the Mobile Campaign</strong>With the Confederacy collapsing in Virginia and the Carolinas, Grant orders Gen. Canby to move against Mobile, Montgomery, and Selma, destroying Confederate logistical capacity in the Gulf region.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Mar 13<br>1865</div>
+      <div class="tl-content"><strong>Canby's Army Begins Moving</strong>32,000 Union troops begin moving north from Fish River along the eastern shore of Mobile Bay. Simultaneously, Steele's 13,000-man column departs Pensacola on a flanking march.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Mar 27<br>1865</div>
+      <div class="tl-content"><strong>Siege of Spanish Fort Begins</strong>Canby's forces rendezvous at Danley's Ferry and immediately invest Spanish Fort. The 12-day siege of a 2,500-man Confederate garrison by 32,000 Union troops begins. Gen. Gibson mounts a defense that astonishes his opponents.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Apr 1<br>1865</div>
+      <div class="tl-content"><strong>Steele Arrives at Fort Blakeley</strong>After a difficult march through spring mud, Steele's column arrives and immediately lays siege to Fort Blakeley. Both Spanish Fort and Fort Blakeley are now under simultaneous siege.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Apr 8<br>1865</div>
+      <div class="tl-content"><strong>Spanish Fort Falls</strong>After twelve days, the 8th Iowa Infantry breaks the Confederate lines. That night, Gen. Gibson executes a brilliant evacuation, slipping most of his command through the Union lines and saving ~1,000 men who reinforce Fort Blakeley. About 500 are captured.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Apr 9<br>1865<br>~1 PM</div>
+      <div class="tl-content"><strong>Lee Surrenders at Appomattox</strong>In Wilmer McLean's parlor at Appomattox Court House, Virginia, Gen. Robert E. Lee formally surrenders the Army of Northern Virginia to Gen. Ulysses S. Grant. The news will not reach Fort Blakeley for hours.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Apr 9<br>1865<br>5:30 PM</div>
+      <div class="tl-content"><strong>The Last Charge — Fort Blakeley Falls</strong>Sixteen thousand Union troops charge across a three-mile front. The 83rd Ohio breaches Redoubt 4. The Confederate line collapses. Liddell surrenders roughly six hours after Appomattox. Harper's Weekly: "Probably the last charge of this war, it was as gallant as any on record."</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Apr 11–12<br>1865</div>
+      <div class="tl-content"><strong>Mobile Surrenders</strong>Gen. Maury evacuates 4,500 Confederate troops from Mobile on the night of April 11. On April 12, Mayor Robert H. Slough surrenders the city without a fight. Three days after Appomattox, the last great Confederate port is in Union hands.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">May 4<br>1865</div>
+      <div class="tl-content"><strong>Final Confederate Surrender</strong>Gen. Dabney H. Maury — the Confederate commander who had organized Mobile's defenses — surrenders his remaining forces to Gen. Canby at Citronelle, Mobile County. The long campaign is over.</div>
+    </div>
+  </div>
+
+  <div class="content-body" style="background:var(--cream);">
+    <h3>The Men Who Were There</h3>
+    <p>In the records of the Baldwin County Historical Society, there are names that echo through these same years. The Pumphrey boys who served in later wars. The fishermen of Bon Secour who would have known about the storm that swept Navy Cove in 1906. The Sonora settlers who arrived just decades after these battles. The community that built itself in the longleaf pines south and east of Blakeley had already lived through the war that left those earthworks behind.</p>
+
+    <p>At Historic Blakeley State Park today, visitors can walk the Confederate earthworks — still visible after 160 years, still rising out of the Alabama clay in the pine-scented air above the Mobile-Tensaw Delta. They can trace the Union parallels. They can stand at Redoubt 4 and look across the same ground that 16,000 men charged on an April afternoon while the war was already over, while the news was making its way south, while men were still dying.</p>
+
+    <p>The site is the largest National Register of Historic Places site east of the Mississippi River. E. O. Wilson, the biologist and Alabama native, wrote a letter to The Conservation Fund about the importance of this land — not only for history but for its ecology, the hardwood cove ravines and blackwater swamps and pine uplands that had survived because they were a battlefield, because no one wanted to build on them. The dead had preserved the living.</p>
+
+    <blockquote>
+      "The Battle of Fort Blakeley concluded a few hours after Lee signed over the Army of Northern Virginia. Some estimate that U.S. Colored Troops represented nearly half the Union force at Fort Blakeley. The involvement of these troops in critical battles such as this has gone largely untold."
+      <span class="source-tag">— The Conservation Fund</span>
+    </blockquote>
+
+    <p>The men of the 73rd USCT — descendants of a free Black militia that had been refused service at the beginning of a war they were finally allowed to fight at its very end — charged those earthworks knowing what they were charging toward and what they were charging away from. Six hours after Appomattox. On the last day the Civil War was fought. On the ground of the old county seat of Baldwin County, where yellow fever had already done what the Union army was finishing.</p>
+
+    <p>The last charge of the last battle of the last campaign ended here, on the bluffs above the Tensaw River, in the spring of 1865, where the azaleas were already blooming.</p>
+  </div>
+
+  <div class="pull-quote" style="background:var(--blood);">
+    <blockquote>"On April 9, 1865 — the last official day of the Civil War — in less than half an hour, Fort Blakeley was overrun. Men who had once been enslaved charged the earthworks of their former world and helped end it."</blockquote>
+    <cite>— The Conservation Fund / Historic Blakeley State Park</cite>
+  </div>
+</section>
+
+
+<!-- COLOPHON -->
+<div class="colophon">
+  <p>THE LAST CAMPAIGN — MOBILE BAY · SPANISH FORT · FORT BLAKELEY</p>
+  <p style="margin-top:.5rem;">Sources: American Battlefield Trust · Encyclopedia of Alabama · Wikipedia · National Park Service<br>Historic Blakeley State Park · Britannica · War History Online · The Conservation Fund<br>Paul Brueske, <em>Digging All Night and Fighting All Day</em> (2024) · Mike Bunn, <em>The Assault on Fort Blakeley</em> (2021)</p>
+  <div style="margin-top:1.5rem;width:60px;height:1px;background:var(--cannon);margin-left:auto;margin-right:auto;"></div>
+  <p style="margin-top:1.5rem;">Historic Blakeley State Park · 34745 State Highway 225 · Spanish Fort, Alabama<br>Largest National Register of Historic Places site east of the Mississippi River</p>
+</div>
+
+</body>
+</html>

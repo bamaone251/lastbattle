@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mobile Campaign — Interactive Battlefield Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Oswald:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#0d0a06;
+  --smoke:#1a1208;
+  --parchment:#f2ead8;
+  --cream:#f8f4ea;
+  --cannon:#b5922a;
+  --gold:#c8a030;
+  --rust:#8c2e18;
+  --union-blue:#1a3a5c;
+  --conf-green:#2e4a1a;
+  --sand:#d4bc96;
+  --aged:#7a5230;
+  --panel:#1e1510;
+  --panel-border:rgba(181,146,42,.22);
+}
+html,body{height:100%;overflow:hidden;background:var(--ink);font-family:"EB Garamond",Georgia,serif;font-size:18px;}
+
+/* ── LAYOUT ── */
+#app{display:flex;height:100vh;width:100vw;}
+
+/* ── SIDEBAR ── */
+#sidebar{
+  width:340px;min-width:300px;flex-shrink:0;
+  background:var(--panel);
+  border-right:1px solid var(--panel-border);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  z-index:400;
+}
+
+#sidebar-header{
+  padding:1.2rem 1.4rem .9rem;
+  border-bottom:1px solid var(--panel-border);
+  flex-shrink:0;
+}
+.sidebar-home{
+  display:inline-block;
+  margin-top:0.85rem;
+  font-family:"Oswald",sans-serif;
+  font-size:0.72rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--sand);
+  text-decoration:none;
+  border-bottom:1px solid rgba(181,146,42,.25);
+}
+.sidebar-home:hover{color:var(--cannon);border-color:var(--cannon);}
+.sidebar-eyebrow{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.65rem;
+  letter-spacing:.35em;text-transform:uppercase;color:var(--cannon);
+  margin-bottom:.3rem;
+}
+.sidebar-title{
+  font-family:"Playfair Display",serif;font-size:1.35rem;font-weight:700;
+  color:var(--parchment);line-height:1.2;
+}
+.sidebar-sub{
+  font-family:"Playfair Display",serif;font-style:italic;
+  font-size:.82rem;color:var(--aged);margin-top:.25rem;
+}
+
+/* ── FILTER TABS ── */
+#filter-tabs{
+  display:flex;flex-wrap:wrap;gap:4px;padding:.7rem .9rem;
+  border-bottom:1px solid var(--panel-border);flex-shrink:0;
+}
+.tab{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.65rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:.3rem .7rem;border-radius:2px;cursor:pointer;
+  border:1px solid var(--panel-border);
+  color:var(--sand);background:transparent;transition:all .18s;
+}
+.tab.active{background:var(--cannon);color:var(--ink);border-color:var(--cannon);font-weight:500;}
+.tab:hover:not(.active){border-color:var(--cannon);color:var(--cannon);}
+
+/* ── LOCATION PANEL ── */
+#location-list{
+  flex:1;overflow-y:auto;padding:.5rem .6rem;
+  scrollbar-width:thin;scrollbar-color:rgba(181,146,42,.2) transparent;
+}
+#location-list::-webkit-scrollbar{width:3px;}
+#location-list::-webkit-scrollbar-thumb{background:rgba(181,146,42,.2);}
+
+.loc-item{
+  padding:.65rem .9rem;border-radius:3px;cursor:pointer;
+  border-left:3px solid transparent;
+  transition:all .15s;margin-bottom:2px;
+}
+.loc-item:hover{background:rgba(181,146,42,.07);border-left-color:var(--cannon);}
+.loc-item.selected{background:rgba(181,146,42,.12);border-left-color:var(--cannon);}
+.loc-item-header{display:flex;align-items:flex-start;gap:.6rem;}
+.loc-icon{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;margin-top:1px;
+}
+.loc-name{
+  font-family:"Playfair Display",serif;font-size:.92rem;font-weight:700;
+  color:var(--parchment);line-height:1.25;
+}
+.loc-date{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.62rem;
+  letter-spacing:.1em;color:var(--cannon);margin-top:2px;
+}
+.loc-snippet{
+  font-size:.8rem;color:rgba(212,188,150,.6);margin-top:.3rem;
+  line-height:1.45;font-style:italic;
+  display:none;
+}
+.loc-item.selected .loc-snippet{display:block;}
+
+/* ── DETAIL PANEL ── */
+#detail-panel{
+  border-top:1px solid var(--panel-border);
+  flex-shrink:0;
+  max-height:38%;
+  overflow-y:auto;
+  display:none;
+  scrollbar-width:thin;scrollbar-color:rgba(181,146,42,.2) transparent;
+}
+#detail-panel::-webkit-scrollbar{width:3px;}
+#detail-panel::-webkit-scrollbar-thumb{background:rgba(181,146,42,.2);}
+#detail-panel.visible{display:block;}
+
+#detail-content{padding:1.1rem 1.2rem;}
+#detail-content .d-cat{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.62rem;
+  letter-spacing:.25em;text-transform:uppercase;color:var(--cannon);margin-bottom:.4rem;
+}
+#detail-content .d-title{
+  font-family:"Playfair Display",serif;font-size:1.15rem;font-weight:700;
+  color:var(--parchment);margin-bottom:.2rem;
+}
+#detail-content .d-date{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.7rem;
+  letter-spacing:.15em;color:var(--aged);margin-bottom:.8rem;
+}
+#detail-content .d-body{
+  font-size:.88rem;color:var(--sand);line-height:1.65;
+}
+#detail-content .d-body p{margin-bottom:.7rem;}
+#detail-content .d-stats{
+  display:flex;flex-wrap:wrap;gap:6px;margin:.8rem 0;
+}
+.d-stat{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.68rem;
+  letter-spacing:.08em;padding:.25rem .6rem;
+  border:1px solid var(--panel-border);color:var(--sand);
+  border-radius:2px;
+}
+.d-stat span{color:var(--cannon);font-weight:500;}
+#detail-close{
+  position:absolute;right:10px;top:10px;
+  font-size:1rem;color:var(--aged);cursor:pointer;
+  padding:2px 6px;
+}
+#detail-close:hover{color:var(--cannon);}
+
+/* ── MAP ── */
+#map{flex:1;position:relative;}
+.leaflet-container{background:#0d1e2a;}
+
+/* Legend on map */
+#map-legend{
+  position:absolute;bottom:24px;right:12px;z-index:500;
+  background:rgba(13,10,6,.92);
+  border:1px solid var(--panel-border);
+  border-radius:4px;padding:.8rem 1rem;
+  min-width:180px;
+}
+.legend-title{
+  font-family:"Oswald",sans-serif;font-weight:400;font-size:.7rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--cannon);
+  margin-bottom:.6rem;
+}
+.legend-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem;}
+.legend-dot{
+  width:12px;height:12px;border-radius:50%;flex-shrink:0;
+  border:2px solid rgba(255,255,255,.3);
+}
+.legend-line{width:24px;height:2px;flex-shrink:0;}
+.legend-label{font-size:.72rem;color:var(--sand);font-family:"Oswald",sans-serif;font-weight:300;}
+
+/* Timeline bar on map */
+#timeline-bar{
+  position:absolute;top:12px;left:50%;transform:translateX(-50%);
+  z-index:500;
+  background:rgba(13,10,6,.92);
+  border:1px solid var(--panel-border);
+  border-radius:4px;padding:.5rem 1.2rem;
+  display:flex;align-items:center;gap:.8rem;
+  white-space:nowrap;
+}
+.tl-step{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.65rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(212,188,150,.35);cursor:pointer;padding:.2rem .5rem;
+  border-bottom:2px solid transparent;transition:all .15s;
+}
+.tl-step.active{color:var(--cannon);border-bottom-color:var(--cannon);}
+.tl-step:hover:not(.active){color:var(--sand);}
+.tl-sep{color:rgba(181,146,42,.2);font-size:.8rem;}
+
+/* Custom popup */
+.leaflet-popup-content-wrapper{
+  background:rgba(13,10,6,.96);
+  border:1px solid var(--panel-border);
+  border-radius:4px;
+  color:var(--parchment);
+  font-family:"EB Garamond",serif;
+  box-shadow:0 4px 24px rgba(0,0,0,.7);
+}
+.leaflet-popup-tip{background:rgba(13,10,6,.96);}
+.leaflet-popup-content{margin:12px 16px;}
+.popup-title{
+  font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;
+  color:var(--parchment);margin-bottom:3px;
+}
+.popup-date{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:.65rem;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--cannon);
+  margin-bottom:7px;
+}
+.popup-body{font-size:.83rem;color:var(--sand);line-height:1.55;max-width:240px;}
+.leaflet-popup-close-button{color:var(--aged)!important;}
+.leaflet-popup-close-button:hover{color:var(--cannon)!important;}
+
+/* Mobile responsive */
+@media(max-width:700px){
+  #app{flex-direction:column;}
+  #sidebar{width:100%;height:44%;min-width:unset;}
+  #map{height:56%;}
+  #detail-panel{max-height:50%;}
+  #timeline-bar{top:8px;padding:.4rem .8rem;gap:.5rem;}
+  .tl-step{font-size:.58rem;}
+}
+
+/* Map attribution override */
+.leaflet-control-attribution{
+  background:rgba(0,0,0,.5)!important;
+  color:rgba(212,188,150,.4)!important;
+  font-size:.6rem!important;
+}
+.leaflet-control-attribution a{color:rgba(181,146,42,.5)!important;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <div class="sidebar-eyebrow">Mobile Campaign · 1864–1865</div>
+      <div class="sidebar-title">The Last Campaign</div>
+      <div class="sidebar-sub">Mobile Bay · Spanish Fort · Fort Blakeley</div>
+      <a href="index.html" class="sidebar-home">Home</a>
+    </div>
+
+    <div id="filter-tabs">
+      <div class="tab active" onclick="filterLocations('all')" data-filter="all">All Sites</div>
+      <div class="tab" onclick="filterLocations('naval')" data-filter="naval">Naval</div>
+      <div class="tab" onclick="filterLocations('land')" data-filter="land">Land</div>
+      <div class="tab" onclick="filterLocations('fort')" data-filter="fort">Forts</div>
+      <div class="tab" onclick="filterLocations('wreck')" data-filter="wreck">Wrecks</div>
+      <div class="tab" onclick="filterLocations('city')" data-filter="city">Cities</div>
+    </div>
+
+    <div id="location-list"></div>
+
+    <div id="detail-panel">
+      <div style="position:relative;">
+        <span id="detail-close" onclick="closeDetail()">✕</span>
+        <div id="detail-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <div id="map">
+    <!-- Timeline bar -->
+    <div id="timeline-bar">
+      <div class="tl-step active" onclick="setPhase('all')" data-phase="all">Full Campaign</div>
+      <div class="tl-sep">·</div>
+      <div class="tl-step" onclick="setPhase('1864')" data-phase="1864">Aug 1864 — Mobile Bay</div>
+      <div class="tl-sep">·</div>
+      <div class="tl-step" onclick="setPhase('march1865')" data-phase="march1865">Mar 1865 — Spanish Fort</div>
+      <div class="tl-sep">·</div>
+      <div class="tl-step" onclick="setPhase('april1865')" data-phase="april1865">Apr 1865 — Blakeley</div>
+    </div>
+
+    <!-- Legend -->
+    <div id="map-legend">
+      <div class="legend-title">Legend</div>
+      <div class="legend-row"><div class="legend-dot" style="background:#b5922a;"></div><div class="legend-label">Confederate Fort / Position</div></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#1a3a5c;"></div><div class="legend-label">Union Fort / Position</div></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#8c2e18;"></div><div class="legend-label">Wreck / Sunk Vessel</div></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#3a6b3a;"></div><div class="legend-label">Battle Site</div></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#4a3a8c;"></div><div class="legend-label">City / Port</div></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#5a5a5a;"></div><div class="legend-label">Historic Site</div></div>
+      <div class="legend-row" style="margin-top:.5rem;">
+        <div class="legend-line" style="background:rgba(26,58,92,.8);"></div>
+        <div class="legend-label">Union Advance Route</div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-line" style="background:rgba(181,146,42,.7);"></div>
+        <div class="legend-label">Confederate Defense Line</div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-line" style="background:rgba(140,46,24,.7);stroke-dasharray:5;"></div>
+        <div class="legend-label">Fleet Movement / Retreat</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  LOCATION DATA
+// ═══════════════════════════════════════════════
+const LOCATIONS = [
+  // ── FORTS ──
+  {
+    id:'fort-morgan', name:'Fort Morgan', type:'fort', side:'confederate',
+    lat:30.228, lng:-88.019,
+    date:'Built 1819–1834 · Battle Aug 5–23, 1864',
+    phase:['1864','all'],
+    snippet:'46-gun star fort guarding the main ship channel into Mobile Bay',
+    detail:`<p>The most formidable of the three Confederate forts defending the entrance to Mobile Bay, Fort Morgan sat on the tip of Mobile Point on the eastern shore. Built between 1819 and 1834, this three-tiered brick star fort mounted 46 guns — primarily 32-pounders, 10-inch Columbiads, and 7- and 8-inch Brooke rifles. About 38 guns could bear on the main ship channel, only 500 yards away.</p><p>On August 5, 1864, Fort Morgan opened fire on Farragut's fleet at 7:06 a.m. Its guns damaged several Union ships and contributed to the chaos when the USS Tecumseh sank nearby. Commander Brig. Gen. Richard Page refused surrender demands, declaring: <em>"I am prepared to sacrifice life and will only surrender when I have no means of defense."</em> After a two-week bombardment — including fire from the captured and re-commissioned CSS Tennessee — Page surrendered on August 23, 1864.</p>`,
+    stats:[{label:'Guns',val:'46'},{label:'Garrison',val:'~400'},{label:'Surrendered',val:'Aug 23, 1864'}]
+  },
+  {
+    id:'fort-gaines', name:'Fort Gaines', type:'fort', side:'confederate',
+    lat:30.251, lng:-88.075,
+    date:'Battle Aug 3–8, 1864',
+    phase:['1864','all'],
+    snippet:'26-gun fort on Dauphin Island guarding the western bay entrance',
+    detail:`<p>Fort Gaines stood on the eastern tip of Dauphin Island, guarding the western side of the channel into Mobile Bay. It mounted 26 guns and held a garrison of about 600 men under Col. Charles D. Anderson. On August 3, 1864, Union General Gordon Granger landed 1,500 infantry on the western end of Dauphin Island and advanced to invest the fort.</p><p>With Fort Gaines largely outflanked after Farragut's fleet entered the bay on August 5, and with no prospect of naval support after the CSS Tennessee surrendered, Anderson made the decision to surrender. On August 8, 1864, he capitulated — a decision that drew sharp criticism from Confederate commanders. Some 800 prisoners were taken and the western entrance to Mobile Bay was secured.</p>`,
+    stats:[{label:'Guns',val:'26'},{label:'Garrison',val:'~600'},{label:'Surrendered',val:'Aug 8, 1864'}]
+  },
+  {
+    id:'fort-powell', name:'Fort Powell', type:'fort', side:'confederate',
+    lat:30.267, lng:-88.148,
+    date:'Abandoned Aug 5, 1864',
+    phase:['1864','all'],
+    snippet:'Smallest of the three Mobile Bay forts, guarding Grant\'s Pass',
+    detail:`<p>Fort Powell was the smallest of the three Confederate forts defending Mobile Bay's entrance, mounting 18 guns and garrisoning about 140 men. It guarded Grant's Pass — the shallow western channel into Mississippi Sound. When Farragut's fleet entered the bay on August 5 and the Union monitor Chickasaw came to bombard it from the rear, the fort's situation became untenable. That evening, its garrison blew up the magazine and evacuated, abandoning the position without a fight.</p>`,
+    stats:[{label:'Guns',val:'18'},{label:'Garrison',val:'~140'},{label:'Abandoned',val:'Aug 5, 1864'}]
+  },
+  {
+    id:'spanish-fort', name:'Spanish Fort', type:'land', side:'confederate',
+    lat:30.672, lng:-87.916,
+    date:'Battle Mar 27 – Apr 8, 1865',
+    phase:['march1865','all'],
+    snippet:'12-day siege; 2,500 defenders vs. 32,000 Union troops',
+    detail:`<p>Spanish Fort sat on a commanding hilltop directly across the upper bay from Mobile, with a 360-degree view and access to the bay by water. The Confederates had constructed trenches and artillery redoubts in a two-mile-long semicircle. Six Louisiana infantry regiments and five Alabama infantry regiments under 33-year-old Brig. Gen. Randall L. Gibson held this position against Canby's 32,000 men.</p><p>Gibson's defense lasted twelve days — outnumbered ten to one — as Union engineers dug three successive parallel trenches ever closer to the Confederate works. On April 8, the 8th Iowa Infantry broke through the northern end of the line. That night, Gibson executed a brilliant evacuation, slipping most of his men through the Union lines to Mobile or Fort Blakeley. About 500 prisoners were captured along with vast quantities of ammunition.</p>`,
+    stats:[{label:'Defenders',val:'~2,500'},{label:'Union Force',val:'32,000'},{label:'Duration',val:'12 days'},{label:'CS Casualties',val:'744'}]
+  },
+  {
+    id:'fort-blakeley', name:'Fort Blakeley', type:'land', side:'battle',
+    lat:30.728, lng:-87.920,
+    date:'Battle Apr 2–9, 1865 · Last Major Battle of Civil War',
+    phase:['april1865','all'],
+    snippet:'Nine redoubts; 16,000 Union vs. 3,500 Confederates; fell same day as Appomattox',
+    detail:`<p>Built on the pine-covered bluffs overlooking the Mobile-Tensaw Delta at the site of a ghost town that had once rivaled Mobile, Fort Blakeley consisted of nine connected redoubts and linking breastworks stretching nearly three miles, mounting 41 artillery pieces. Brig. Gen. St. John R. Liddell commanded roughly 3,500 defenders.</p><p>After a week-long siege, Canby concentrated 16,000 men — including 5,000 United States Colored Troops, one of the largest concentrations of USCT in any single battle — for the final assault at 5:30 PM on April 9, 1865. The 83rd Ohio Infantry breached Redoubt 4; the Confederate lines collapsed. Liddell surrendered six hours after Robert E. Lee had done the same at Appomattox. Thirteen Medals of Honor were awarded for the assault.</p>`,
+    stats:[{label:'Defenders',val:'~3,500'},{label:'Union Force',val:'16,000'},{label:'USCT Troops',val:'5,000'},{label:'Medals of Honor',val:'13'}]
+  },
+  // ── WRECKS ──
+  {
+    id:'tecumseh', name:'USS Tecumseh (Wreck)', type:'wreck', side:'union',
+    lat:30.237, lng:-88.012,
+    date:'Sunk August 5, 1864, 7:40 AM',
+    phase:['1864','all'],
+    snippet:'Monitor sunk by Confederate torpedo — 94 of 114 crew lost',
+    detail:`<p>The USS Tecumseh was a Canonicus-class monitor armed with two 15-inch Dahlgren guns. On the morning of August 5, 1864, Captain Tunis Craven steered Tecumseh slightly right of the planned course — directly into the Confederate minefield — intent on engaging the CSS Tennessee. A torpedo (naval mine) detonated under her hull and she sank in less than 30 seconds, taking 94 of her 114 men to the bottom, including Captain Craven.</p><p>In a final act of selflessness, Craven stood aside to let the pilot through the escape hatch first. There was no time for both. The wreck lies on the bottom of Mobile Bay today, still marked by a buoy visible from the Fort Morgan beach. It is an official war grave, protected from disturbance. The sudden sinking caused confusion in the Union line that brought the entire advance to a near halt — until Farragut ordered: <em>"Damn the torpedoes. Full speed ahead."</em></p>`,
+    stats:[{label:'Crew Lost',val:'94 of 114'},{label:'Type',val:'Monitor'},{label:'Armament',val:'2 × 15" guns'},{label:'Depth',val:'~30 ft'}]
+  },
+  {
+    id:'css-tennessee', name:'CSS Tennessee (Surrender)', type:'naval', side:'confederate',
+    lat:30.32, lng:-88.02,
+    date:'Surrendered August 5, 1864 ~10:00 AM',
+    phase:['1864','all'],
+    snippet:'Most powerful Confederate ironclad — took on the entire Union fleet alone',
+    detail:`<p>The CSS Tennessee was the most powerful ironclad the Confederacy ever completed — 209 feet long, armored with six inches of iron over twenty-four inches of timber, mounting two 7-inch and four 6.4-inch Brooke rifles, and commanded by the Confederacy's only full admiral, Franklin Buchanan. She had been built at Selma, Alabama, commissioned in February 1864, and towed down Mobile Bay with great difficulty past the Dog River sandbar.</p><p>After Farragut's fleet passed into the bay, Buchanan made the astounding decision to attack the entire Union fleet single-handed rather than shelter under Fort Morgan. Tennessee was rammed by Monongahela, Lackawanna, and Hartford in succession. Union gunfire eventually destroyed her exposed rudder chains. With her steering gone, hull battered, Admiral Buchanan badly wounded with a broken leg, and smokestack carried away, Commander James Johnston requested permission to surrender. The flag came down at approximately 10:00 AM — about three hours after the first shot. Tennessee was repaired and served the Union Navy as USS Tennessee through the end of the war.</p>`,
+    stats:[{label:'Admiral',val:'Buchanan (wounded/captured)'},{label:'Armor',val:'6" iron + 24" wood'},{label:'Fight Duration',val:'~3 hours'},{label:'Outcome',val:'Captured, renamed USS Tennessee'}]
+  },
+  {
+    id:'css-selma', name:'CSS Selma (Captured)', type:'wreck', side:'confederate',
+    lat:30.31, lng:-88.03,
+    date:'Captured August 5, 1864',
+    phase:['1864','all'],
+    snippet:'Confederate gunboat captured by USS Metacomet inside the bay',
+    detail:`<p>The CSS Selma was one of three Confederate gunboats supporting the CSS Tennessee at the Battle of Mobile Bay. After Farragut's fleet entered the bay, the fast Union gunboat Metacomet was unleashed from Hartford and gave chase. Selma was captured after a brisk engagement. Her captain, Peter U. Murphey, was praised in Confederate after-action reports for "devotedly gallant" conduct.</p>`,
+    stats:[{label:'Type',val:'Gunboat'},{label:'Outcome',val:'Captured by USS Metacomet'}]
+  },
+  // ── CITIES / KEY POSITIONS ──
+  {
+    id:'mobile', name:'Mobile, Alabama', type:'city', side:'confederate',
+    lat:30.694, lng:-88.043,
+    date:'Confederate Port · Fell April 12, 1865',
+    phase:['1864','march1865','april1865','all'],
+    snippet:'Last major Confederate port on the Gulf — the strategic prize of the entire campaign',
+    detail:`<p>By 1864, Mobile was the most important city remaining to the Confederacy on the Gulf of Mexico. Two railroads connected it to the Confederate interior; blockade runners carried vital supplies from Havana, Cuba. The city was extraordinarily well fortified — a triple line of earthworks on the land side, and the elaborate bay defenses at its entrance.</p><p>After Farragut closed the bay in August 1864, Mobile was cut off but not captured — still garrisoned by thousands of Confederate troops who might have been better used elsewhere. The city finally fell April 12, 1865, three days after Appomattox, when Mayor Robert H. Slough surrendered it without a fight after Gen. Dabney Maury evacuated the last Confederate defenders the night before.</p>`,
+    stats:[{label:'Surrendered',val:'April 12, 1865'},{label:'Population (1860)',val:'~29,000'},{label:'Strategic Value',val:'Last Gulf Confederate port'}]
+  },
+  {
+    id:'dauphin-island', name:'Dauphin Island Landing', type:'land', side:'union',
+    lat:30.268, lng:-88.087,
+    date:'Union Landing August 3, 1864',
+    phase:['1864','all'],
+    snippet:'Granger\'s 1,500 infantry landed here to begin siege of Fort Gaines',
+    detail:`<p>On August 3, 1864 — two days before the naval battle — Union General Gordon Granger landed approximately 1,500 infantry soldiers on the remote western end of Dauphin Island under the protection of one of Farragut's flotillas. The troops consisted of detachments from the 77th Illinois, 34th Iowa, 96th Ohio, and 3rd Maryland regiments. They marched east and by evening had dug in less than half a mile from Fort Gaines. The coordinated army-navy attack was essential to Farragut's plan: the army at Gaines would force the Confederates to split attention while the fleet ran the channel past Fort Morgan.</p>`,
+    stats:[{label:'Force',val:'~1,500 infantry'},{label:'Landing Date',val:'Aug 3, 1864'},{label:'Commander',val:'Maj. Gen. Gordon Granger'}]
+  },
+  {
+    id:'fish-river', name:'Fish River Staging Area', type:'land', side:'union',
+    lat:30.452, lng:-87.866,
+    date:'Union Assembly Point, March 1865',
+    phase:['march1865','all'],
+    snippet:'Canby\'s 32,000 troops assembled here before the march north to Spanish Fort',
+    detail:`<p>Fish River on the eastern shore of Mobile Bay served as the assembly point for Maj. Gen. Edward R.S. Canby's massive Union land force in March 1865. From here, 32,000 men of the XIII and XVI Corps moved north along the eastern shore toward Spanish Fort and Fort Blakeley. The staging area was close enough to Fort Morgan — which Union forces had held since August 1864 — to draw on established supply lines. Simultaneously, Brig. Gen. Frederick Steele's 13,000-man column departed Pensacola to close the pincer from the east.</p>`,
+    stats:[{label:'Union Force',val:'32,000 troops'},{label:'Commander',val:'Maj. Gen. E.R.S. Canby'},{label:'Dept',val:'XIII & XVI Corps'}]
+  },
+  {
+    id:'pensacola', name:'Pensacola, Florida (Union Base)', type:'city', side:'union',
+    lat:30.421, lng:-87.217,
+    date:'Union Base of Operations',
+    phase:['april1865','all'],
+    snippet:'Steele\'s 13,000-man column departed from here to invest Fort Blakeley',
+    detail:`<p>Pensacola served as the eastern base of operations for the Union's 1865 Mobile Campaign. Brig. Gen. Frederick Steele's column of 13,000 men — including the United States Colored Troops under Brig. Gen. John P. Hawkins — departed Pensacola on March 20, 1865. They moved north to the railroad at Pollard, Alabama, then swung west toward the Tensaw River, giving the impression of heading toward Montgomery before turning south to invest Fort Blakeley from the rear. Steele's force arrived at Fort Blakeley on April 1, 1865, after a grueling march through spring mud.</p>`,
+    stats:[{label:'Force',val:'13,000 troops'},{label:'Commander',val:'Brig. Gen. Frederick Steele'},{label:'Departure',val:'March 20, 1865'}]
+  },
+  {
+    id:'historic-blakeley-park', name:'Historic Blakeley State Park', type:'city', side:'neutral',
+    lat:30.742, lng:-87.912,
+    date:'Preserved Battlefield — Open Today',
+    phase:['april1865','all'],
+    snippet:'3,800 acres preserving Confederate earthworks, Union parallels, and Redoubt 4',
+    detail:`<p>Historic Blakeley State Park preserves 3,800 acres of the original Fort Blakeley battlefield — the largest National Register of Historic Places site east of the Mississippi River. Visitors today can walk the Confederate earthworks, trace the three Union parallels, and stand at the site of Redoubt 4 where the 83rd Ohio Infantry breached the Confederate lines on the last afternoon of the Civil War.</p><p>The park includes the original Mobile-Tensaw Delta, hardwood cove ravines, blackwater swamps, and pine uplands. Biologist E.O. Wilson wrote to The Conservation Fund about the ecological significance of the land, which survived because it was a battlefield. The park hosts annual reenactments of the battle. Located at 34745 State Highway 225, Spanish Fort, Alabama.</p>`,
+    stats:[{label:'Acres',val:'3,800'},{label:'Designation',val:'National Register – Largest east of Mississippi'},{label:'Address',val:'34745 Hwy 225, Spanish Fort, AL'}]
+  },
+  {
+    id:'fort-morgan-park', name:'Fort Morgan State Historic Site', type:'fort', side:'neutral',
+    lat:30.228, lng:-88.019,
+    date:'Preserved Fort — Open Today',
+    phase:['all'],
+    snippet:'Well-preserved 1834 star fort with museum, cannons, and Civil War exhibits',
+    detail:`<p>Fort Morgan State Historic Site preserves one of the best examples of antebellum American military architecture in the Deep South. The original brick star fort — built between 1819 and 1834 — still stands largely intact, with original cannon, powder magazines, and defensive works. The museum includes exhibits on the Battle of Mobile Bay, the CSS Tennessee, and the role of Fort Morgan in closing the port.</p><p>Visitors standing on the fort's western parapet can see a multicolored buoy approximately 300 yards offshore — the only marker over the wreck of the USS Tecumseh, resting on the bay bottom since August 5, 1864. The wreck is an official war grave.</p>`,
+    stats:[{label:'Built',val:'1819–1834'},{label:'Address',val:'110 Hwy 180, Gulf Shores, AL'},{label:'Hours',val:'Daily 8AM–5PM'}]
+  },
+  {
+    id:'redoubt-4', name:'Redoubt 4 — Breakthrough Point', type:'land', side:'battle',
+    lat:30.726, lng:-87.925,
+    date:'Breached April 9, 1865, ~5:45 PM',
+    phase:['april1865','all'],
+    snippet:'Where the 83rd Ohio Infantry breached the Confederate lines in the last charge',
+    detail:`<p>Redoubt 4 was the central position in the Confederate defensive line at Fort Blakeley, and it became the breakthrough point in the last major charge of the Civil War. On April 9, 1865, at approximately 5:45 PM — hours after Lee had surrendered at Appomattox — a Union brigade led by the 83rd Ohio Infantry stormed over the walls of Redoubt 4.</p><p>Captain Patrick H. Pentzer of the 97th Illinois Infantry was the first man into the redoubt, receiving the personal surrender of Brig. Gen. Francis M. Cockrell inside — earning his Medal of Honor in the last minutes of the last major battle. Once Redoubt 4 fell, the Confederate lines collapsed along the entire three-mile front. The site is preserved and accessible at Historic Blakeley State Park.</p>`,
+    stats:[{label:'Breached',val:'~5:45 PM, April 9, 1865'},{label:'First in',val:'Capt. Patrick H. Pentzer, 97th Illinois'},{label:'MOH Awarded',val:'4 for actions here'}]
+  },
+  {
+    id:'usct-position', name:'USCT Division Position', type:'land', side:'union',
+    lat:30.735, lng:-87.940,
+    date:'Right Flank, April 9, 1865',
+    phase:['april1865','all'],
+    snippet:'~5,000 U.S. Colored Troops — one of the largest concentrations in any Civil War battle',
+    detail:`<p>At Fort Blakeley, approximately 5,000 men of nine United States Colored Troops (USCT) regiments — the 47th, 48th, 50th, 51st, 68th, 73rd, 76th, 82nd, and 86th Infantry — were organized under Brig. Gen. John P. Hawkins and positioned on the right flank of the Union army, fronting Confederate Redoubts 1 and 2. This represented one of the heaviest concentrations of African American soldiers in any single battle of the Civil War.</p><p>The 73rd USCT — composed largely of free Black men from New Orleans, whose ancestors had offered to fight for the Confederacy at the war's start and been refused — was the first USCT regiment to reach the Confederate line. Officers Lt. Col. Henry C. Merriam and Capt. Henry C. Nichols both received the Medal of Honor for volunteering to lead the reconnaissance in advance of the assault. The USCT captured over 200 prisoners and several artillery pieces, sustaining some of the heaviest proportional casualties of any unit engaged.</p>`,
+    stats:[{label:'USCT Strength',val:'~5,000 men'},{label:'Regiments',val:'9 (47th–86th)'},{label:'Commander',val:'Brig. Gen. John P. Hawkins'},{label:'MOH',val:'Merriam + Nichols (73rd USCT)'}]
+  },
+  {
+    id:'danley-ferry', name:'Danley\'s Ferry', type:'land', side:'union',
+    lat:30.592, lng:-87.904,
+    date:'Union Rendezvous Point, March 27, 1865',
+    phase:['march1865','all'],
+    snippet:'Canby\'s forces crossed here before beginning the siege of Spanish Fort',
+    detail:`<p>Danley's Ferry on the eastern shore of Mobile Bay served as the rendezvous point where Canby's massive force assembled before investing Spanish Fort on March 27, 1865. The crossing and concentration of 32,000 men at this point — together with the simultaneous march of Steele's column from Pensacola — represented the opening of the final land campaign against Mobile. From Danley's Ferry, Union forces immediately began the systematic encirclement of Spanish Fort that would culminate twelve days later.</p>`,
+    stats:[{label:'Date',val:'March 27, 1865'},{label:'Force',val:'~32,000 men'}]
+  },
+  {
+    id:'battery-huger', name:'Battery Huger', type:'fort', side:'confederate',
+    lat:30.660, lng:-87.958,
+    date:'Abandoned April 11, 1865',
+    phase:['march1865','april1865','all'],
+    snippet:'Island battery in the Blakeley River — abandoned after Spanish Fort fell',
+    detail:`<p>Battery Huger was one of two Confederate island artillery batteries in the Blakeley River, positioned to prevent Union gunboats from approaching Spanish Fort and Fort Blakeley by water. After Spanish Fort fell on April 8 and Fort Blakeley on April 9, Battery Huger and Battery Tracy were rendered strategically useless. Both were abandoned on April 11, 1865, as the last Confederate defenders evacuated toward Mobile and eventually to Citronelle for the final surrender on May 4.</p>`,
+    stats:[{label:'Abandoned',val:'April 11, 1865'},{label:'Purpose',val:'River defense for Spanish Fort & Blakeley'}]
+  },
+  {
+    id:'citronelle', name:'Citronelle — Final Surrender', type:'city', side:'confederate',
+    lat:31.090, lng:-88.224,
+    date:'May 4, 1865',
+    phase:['april1865','all'],
+    snippet:'Gen. Maury surrendered the last Confederate Gulf forces here — war ends in this theater',
+    detail:`<p>On May 4, 1865 — three weeks after Appomattox, and more than three weeks after the fall of Fort Blakeley and Mobile — Confederate Maj. Gen. Dabney H. Maury formally surrendered his remaining forces to Maj. Gen. Edward R.S. Canby at Citronelle, in Mobile County. This was the final surrender of organized Confederate forces in the Gulf theater. Maury's force — what remained of the Army of Mobile after the evacuations of Spanish Fort, Fort Blakeley, and the city of Mobile itself — was the last significant Confederate army to lay down arms east of the Mississippi River.</p>`,
+    stats:[{label:'Date',val:'May 4, 1865'},{label:'Confederate Commander',val:'Maj. Gen. Dabney H. Maury'},{label:'Union Commander',val:'Maj. Gen. E.R.S. Canby'}]
+  }
+];
+
+// ═══════════════════════════════════════════════
+//  MOVEMENT LINES
+// ═══════════════════════════════════════════════
+const LINES = [
+  // Farragut fleet approach into bay
+  {
+    id:'farragut-fleet', label:"Farragut's Fleet (Aug 5, 1864)",
+    coords:[[30.18,-88.01],[30.21,-88.015],[30.228,-88.012],[30.24,-88.01],[30.30,-88.00],[30.35,-88.00]],
+    color:'#2a5f8c', weight:2.5, dash:'', phase:['1864','all'], opacity:0.75
+  },
+  // Confederate torpedo line
+  {
+    id:'torpedo-line', label:'Confederate Torpedo Field',
+    coords:[[30.256,-88.074],[30.248,-88.055],[30.240,-88.038],[30.235,-88.025],[30.230,-88.012]],
+    color:'rgba(181,146,42,0.8)', weight:3, dash:'4 6', phase:['1864','all'], opacity:0.7
+  },
+  // CSS Tennessee sortie
+  {
+    id:'css-tennessee-sortie', label:"CSS Tennessee's Last Charge",
+    coords:[[30.233,-88.013],[30.285,-88.015],[30.32,-88.02]],
+    color:'#8c2e18', weight:2, dash:'5 4', phase:['1864','all'], opacity:0.75
+  },
+  // Canby advance north along eastern shore
+  {
+    id:'canby-advance', label:"Canby's Advance (Mar 1865)",
+    coords:[[30.31,-87.83],[30.37,-87.855],[30.45,-87.866],[30.52,-87.882],[30.592,-87.904],[30.650,-87.912],[30.672,-87.916]],
+    color:'#2a5f8c', weight:2.5, dash:'', phase:['march1865','all'], opacity:0.7
+  },
+  // Steele advance from Pensacola
+  {
+    id:'steele-advance', label:"Steele's Column from Pensacola",
+    coords:[[30.421,-87.217],[30.51,-87.4],[30.58,-87.62],[30.63,-87.78],[30.728,-87.920]],
+    color:'#3a6b8c', weight:2, dash:'6 4', phase:['april1865','all'], opacity:0.65
+  },
+  // Confederate defense arc Spanish Fort
+  {
+    id:'spanish-fort-line', label:'Spanish Fort Defense Line',
+    coords:[[30.668,-87.930],[30.670,-87.918],[30.674,-87.910],[30.677,-87.904],[30.676,-87.898],[30.671,-87.895],[30.664,-87.900]],
+    color:'#b5922a', weight:2.5, dash:'8 4', phase:['march1865','all'], opacity:0.75
+  },
+  // Confederate defense line Blakeley (north-south)
+  {
+    id:'blakeley-line', label:'Fort Blakeley Defense Line (3 miles)',
+    coords:[[30.742,-87.916],[30.738,-87.917],[30.735,-87.919],[30.730,-87.920],[30.726,-87.921],[30.722,-87.922],[30.717,-87.921],[30.712,-87.920]],
+    color:'#b5922a', weight:3, dash:'8 4', phase:['april1865','all'], opacity:0.8
+  },
+  // Union 3rd parallel Blakeley
+  {
+    id:'union-parallel', label:'Union 3rd Parallel (Blakeley)',
+    coords:[[30.742,-87.938],[30.737,-87.940],[30.733,-87.942],[30.728,-87.943],[30.724,-87.944],[30.720,-87.944],[30.715,-87.942],[30.711,-87.940]],
+    color:'#2a5f8c', weight:2, dash:'5 3', phase:['april1865','all'], opacity:0.65
+  },
+  // Confederate evacuation from Spanish Fort
+  {
+    id:'gibson-evacuation', label:"Gibson's Evacuation Route (Night, Apr 8)",
+    coords:[[30.672,-87.916],[30.668,-87.930],[30.660,-87.940],[30.660,-87.958],[30.665,-87.970],[30.668,-87.990],[30.680,-88.020],[30.694,-88.043]],
+    color:'#8c2e18', weight:1.8, dash:'6 5', phase:['april1865','march1865','all'], opacity:0.55
+  },
+  // Union assault vectors at Blakeley (simplified)
+  {
+    id:'usct-charge', label:'USCT Assault Direction',
+    coords:[[30.735,-87.940],[30.735,-87.925]],
+    color:'#4a90c4', weight:2, dash:'4 3', phase:['april1865','all'], opacity:0.7
+  }
+];
+
+// ═══════════════════════════════════════════════
+//  MAP INIT
+// ═══════════════════════════════════════════════
+const map = L.map('map', {
+  center: [30.48, -87.97],
+  zoom: 10,
+  zoomControl: false,
+  attributionControl: true
+});
+
+// Add zoom control to bottom-left
+L.control.zoom({ position: 'bottomleft' }).addTo(map);
+
+// Tile layers
+const tiles = {
+  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '© Esri World Imagery',
+    maxZoom: 19
+  }),
+  topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenTopoMap',
+    maxZoom: 17
+  }),
+  dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap, © CartoDB',
+    maxZoom: 19
+  }),
+  darkLabels: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap, © CartoDB',
+    maxZoom: 19
+  })
+};
+
+tiles.darkLabels.addTo(map);
+
+// Layer control
+const baseMaps = {
+  "Dark (Labels)": tiles.darkLabels,
+  "Dark (No Labels)": tiles.dark,
+  "Satellite": tiles.satellite,
+  "Topographic": tiles.topo
+};
+L.control.layers(baseMaps, {}, { position: 'topright', collapsed: true }).addTo(map);
+
+// ═══════════════════════════════════════════════
+//  COLOR HELPERS
+// ═══════════════════════════════════════════════
+function getColor(loc) {
+  if (loc.type === 'wreck') return '#8c2e18';
+  if (loc.type === 'city' && loc.side === 'neutral') return '#5a5a5a';
+  if (loc.side === 'union') return '#1a3a5c';
+  if (loc.side === 'confederate') return '#b5922a';
+  if (loc.type === 'land' && loc.side === 'battle') return '#3a6b3a';
+  return '#5a5a5a';
+}
+
+function getEmoji(loc) {
+  if (loc.type === 'wreck') return '⚓';
+  if (loc.type === 'fort') return '🏰';
+  if (loc.type === 'naval') return '⚓';
+  if (loc.type === 'city') return '🏙';
+  if (loc.type === 'land') return '⚔';
+  return '📍';
+}
+
+// ═══════════════════════════════════════════════
+//  MARKER CREATION
+// ═══════════════════════════════════════════════
+const markerLayers = {};
+const markerMap = {};
+
+function createMarkerIcon(loc, highlighted) {
+  const color = getColor(loc);
+  const size = highlighted ? 18 : 14;
+  const ring = highlighted ? 4 : 2.5;
+  return L.divIcon({
+    className: '',
+    html: `<div style="
+      width:${size}px;height:${size}px;
+      border-radius:50%;
+      background:${color};
+      border:${ring}px solid rgba(255,255,255,0.85);
+      box-shadow:0 0 ${highlighted?10:6}px ${color},0 2px 8px rgba(0,0,0,.5);
+      transition:all .2s;
+    "></div>`,
+    iconSize: [size, size],
+    iconAnchor: [size/2, size/2],
+    popupAnchor: [0, -(size/2 + 4)]
+  });
+}
+
+LOCATIONS.forEach(loc => {
+  const marker = L.marker([loc.lat, loc.lng], {
+    icon: createMarkerIcon(loc, false)
+  });
+
+  const popupHtml = `
+    <div class="popup-title">${loc.name}</div>
+    <div class="popup-date">${loc.date}</div>
+    <div class="popup-body">${loc.snippet}</div>
+    <div style="margin-top:8px;">
+      <span style="font-family:Oswald,sans-serif;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cannon);cursor:pointer;"
+        onclick="selectLocation('${loc.id}')">View full details →</span>
+    </div>
+  `;
+
+  marker.bindPopup(popupHtml, { maxWidth: 280, autoPan: true });
+  marker.on('click', () => selectLocation(loc.id));
+
+  marker.addTo(map);
+  markerLayers[loc.id] = marker;
+  markerMap[loc.id] = loc;
+});
+
+// ═══════════════════════════════════════════════
+//  LINE LAYERS
+// ═══════════════════════════════════════════════
+const lineLayers = {};
+LINES.forEach(line => {
+  const poly = L.polyline(line.coords, {
+    color: line.color,
+    weight: line.weight,
+    opacity: line.opacity,
+    dashArray: line.dash || null,
+    lineJoin: 'round'
+  });
+  // Arrowhead hint via tooltip on hover
+  poly.bindTooltip(line.label, { sticky: true, className: 'leaflet-popup-content-wrapper', direction: 'top' });
+  poly.addTo(map);
+  lineLayers[line.id] = { poly, line };
+});
+
+// ═══════════════════════════════════════════════
+//  SIDEBAR LIST
+// ═══════════════════════════════════════════════
+let currentFilter = 'all';
+let currentPhase = 'all';
+let selectedId = null;
+
+function buildList() {
+  const list = document.getElementById('location-list');
+  list.innerHTML = '';
+  
+  const filtered = LOCATIONS.filter(loc => {
+    const matchFilter = currentFilter === 'all' || loc.type === currentFilter;
+    const matchPhase = currentPhase === 'all' || (loc.phase && loc.phase.includes(currentPhase));
+    return matchFilter && matchPhase;
+  });
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div style="padding:1.5rem;color:var(--aged);font-style:italic;font-size:.85rem;">No locations match this filter.</div>';
+    return;
+  }
+
+  filtered.forEach(loc => {
+    const item = document.createElement('div');
+    item.className = 'loc-item' + (loc.id === selectedId ? ' selected' : '');
+    item.dataset.id = loc.id;
+    const color = getColor(loc);
+    item.innerHTML = `
+      <div class="loc-item-header">
+        <div class="loc-icon" style="background:${color}22;border:1px solid ${color}66;">
+          <span style="font-size:10px;">${getEmoji(loc)}</span>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div class="loc-name">${loc.name}</div>
+          <div class="loc-date">${loc.date}</div>
+          ${loc.id === selectedId ? `<div class="loc-snippet">${loc.snippet}</div>` : ''}
+        </div>
+      </div>
+    `;
+    item.onclick = () => selectLocation(loc.id);
+    list.appendChild(item);
+  });
+}
+
+function filterLocations(type) {
+  currentFilter = type;
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.filter === type);
+  });
+  buildList();
+}
+
+function setPhase(phase) {
+  currentPhase = phase;
+  document.querySelectorAll('.tl-step').forEach(s => {
+    s.classList.toggle('active', s.dataset.phase === phase);
+  });
+  
+  // Show/hide markers
+  LOCATIONS.forEach(loc => {
+    const visible = phase === 'all' || (loc.phase && loc.phase.includes(phase));
+    if (visible) {
+      if (!map.hasLayer(markerLayers[loc.id])) markerLayers[loc.id].addTo(map);
+    } else {
+      if (map.hasLayer(markerLayers[loc.id])) map.removeLayer(markerLayers[loc.id]);
+    }
+  });
+
+  // Show/hide lines
+  LINES.forEach(line => {
+    const layer = lineLayers[line.id];
+    const visible = phase === 'all' || (line.phase && line.phase.includes(phase));
+    if (visible) {
+      if (!map.hasLayer(layer.poly)) layer.poly.addTo(map);
+    } else {
+      if (map.hasLayer(layer.poly)) map.removeLayer(layer.poly);
+    }
+  });
+
+  // Zoom to relevant area
+  const zoomTargets = {
+    '1864': [[30.15, -88.20], [30.45, -87.85]],
+    'march1865': [[30.40, -88.10], [30.75, -87.80]],
+    'april1865': [[30.60, -88.05], [30.82, -87.75]],
+    'all': [[30.10, -88.30], [31.20, -87.10]]
+  };
+  if (zoomTargets[phase]) {
+    map.fitBounds(zoomTargets[phase], { padding: [30, 30] });
+  }
+
+  buildList();
+}
+
+// ═══════════════════════════════════════════════
+//  LOCATION SELECTION
+// ═══════════════════════════════════════════════
+function selectLocation(id) {
+  // Deselect previous
+  if (selectedId && markerLayers[selectedId]) {
+    markerLayers[selectedId].setIcon(createMarkerIcon(markerMap[selectedId], false));
+  }
+
+  selectedId = id;
+  const loc = markerMap[id];
+  if (!loc) return;
+
+  // Highlight marker
+  markerLayers[id].setIcon(createMarkerIcon(loc, true));
+  
+  // Pan to marker
+  map.setView([loc.lat, loc.lng], Math.max(map.getZoom(), 11), { animate: true, duration: 0.6 });
+
+  // Open popup
+  markerLayers[id].openPopup();
+
+  // Show detail panel
+  const panel = document.getElementById('detail-panel');
+  const content = document.getElementById('detail-content');
+  
+  let statsHtml = '';
+  if (loc.stats && loc.stats.length) {
+    statsHtml = '<div class="d-stats">' + loc.stats.map(s => 
+      `<div class="d-stat">${s.label}: <span>${s.val}</span></div>`
+    ).join('') + '</div>';
+  }
+
+  content.innerHTML = `
+    <div class="d-cat">${loc.type.toUpperCase()} · ${loc.side.toUpperCase()}</div>
+    <div class="d-title">${loc.name}</div>
+    <div class="d-date">${loc.date}</div>
+    ${statsHtml}
+    <div class="d-body">${loc.detail}</div>
+  `;
+  panel.classList.add('visible');
+
+  // Update list selection
+  buildList();
+  document.querySelector(`.loc-item[data-id="${id}"]`)?.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('visible');
+  if (selectedId && markerLayers[selectedId]) {
+    markerLayers[selectedId].setIcon(createMarkerIcon(markerMap[selectedId], false));
+  }
+  selectedId = null;
+  buildList();
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+buildList();
+
+// Clicking the map clears selection
+map.on('click', (e) => {
+  // Only close if not clicking a marker
+  setTimeout(() => {
+    if (!e.originalEvent._markerClicked) closeDetail();
+  }, 50);
+});
+
+// Welcome fly-in
+setTimeout(() => {
+  map.flyTo([30.48, -87.97], 10, { animate: true, duration: 1.5 });
+}, 300);
+</script>
+</body>
+</html>
